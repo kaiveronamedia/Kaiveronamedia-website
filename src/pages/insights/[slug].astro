@@ -1,0 +1,69 @@
+---
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Text from '../../components/Text.astro';
+import settings from '../../content/settings.json';
+import { getInsights, getPage } from '../../lib/content';
+import { SITE_URL } from '../../lib/env';
+
+// Drafts are built in preview only (getInsights includes them when placeholders show).
+export async function getStaticPaths() {
+  const posts = await getInsights();
+  return posts.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const post = entry.data;
+const { Content } = await render(entry);
+const { data: index } = await getPage('insights');
+const crumbs = [
+  { label: settings.ui.home, href: '/' },
+  { label: index.h1, href: '/insights' },
+  { label: post.title },
+];
+const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const url = `${SITE_URL}/insights/${post.slug}`;
+const article = {
+  '@type': 'Article',
+  '@id': `${url}#article`,
+  headline: post.title,
+  description: post.description,
+  datePublished: post.publishDate.toISOString(),
+  mainEntityOfPage: url,
+  inLanguage: 'en-GB',
+  author: { '@id': `${SITE_URL}/#kai` },
+  publisher: { '@id': `${SITE_URL}/#org` },
+  ...(post.heroImage ? { image: [new URL(post.heroImage.src, SITE_URL).href] } : {}),
+};
+---
+<BaseLayout
+  title={`${post.title} | ${settings.siteName}`}
+  description={post.description}
+  breadcrumbs={crumbs}
+  ogType="article"
+  noindex={post.draft}
+  schema={[article]}
+>
+  <article>
+    <header class="page-hero surface-ink">
+      <div class="container">
+        <Breadcrumbs items={crumbs} />
+        <p class="eyebrow">
+          <time datetime={post.publishDate.toISOString().slice(0, 10)}>{fmt.format(post.publishDate)}</time>
+          {post.draft && <span> · {index.draftLabel}</span>}
+        </p>
+        <h1 class="page-title"><Text value={post.title} /></h1>
+        <p class="page-lead"><Text value={post.description} /></p>
+      </div>
+    </header>
+    <div class="section surface-stone section-tight">
+      <div class="container">
+        {post.heroImage && (
+          <Image src={post.heroImage} alt={post.heroImageAlt ?? ''} widths={[640, 960, 1280]} sizes="(min-width: 900px) 860px, 100vw" class="post-hero" loading="eager" />
+        )}
+        <div class="prose"><Content /></div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

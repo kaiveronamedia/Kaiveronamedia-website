@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { getPage } from '../lib/content';
+import { visible } from '../lib/placeholders';
+
+const { data: page } = await getPage('thanks');
+---
+<BaseLayout title={page.seoTitle} description={page.description} noindex>
+  <PageHero title={page.h1} lead={visible(page.replyTime) ? page.replyTime : undefined} />
+</BaseLayout>

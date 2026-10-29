@@ -1,0 +1,11 @@
+---
+import SectorPage from '../components/SectorPage.astro';
+import { getSectors } from '../lib/content';
+
+export async function getStaticPaths() {
+  const sectors = await getSectors();
+  return sectors.map((entry) => ({ params: { sector: entry.data.slug }, props: { entry } }));
+}
+const { entry } = Astro.props;
+---
+<SectorPage entry={entry} />

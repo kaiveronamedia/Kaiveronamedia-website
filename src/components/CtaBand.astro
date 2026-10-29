@@ -1,0 +1,28 @@
+---
+import settings from '../content/settings.json';
+import Button from './Button.astro';
+
+interface Props {
+  title?: string;
+  body?: string;
+  /** Text link to the ROI calculator (hidden on the calculator page itself) */
+  showRoi?: boolean;
+  /** The closing CTA on the homepage carries Kai's sign-off */
+  signOff?: boolean;
+}
+const { title = settings.ctaBand.title, body = settings.ctaBand.body, showRoi = true, signOff = false } = Astro.props;
+---
+<section class="cta-band surface-ink" aria-labelledby="cta-title">
+  <div class="container">
+    <h2 id="cta-title" class="cta-title">{title}</h2>
+    <p class="cta-body">{body}</p>
+    <div class="cta-actions">
+      <Button href={settings.cta.href}>{settings.cta.label}</Button>
+      <p class="microcopy">{settings.cta.microcopy}</p>
+    </div>
+    {showRoi && (
+      <p class="cta-roi"><Button href={settings.ctaBand.roiLinkHref} variant="link">{settings.ctaBand.roiLinkText}</Button></p>
+    )}
+    {signOff && <p class="cta-signoff" aria-hidden="true">{settings.ctaBand.signOff}</p>}
+  </div>
+</section>

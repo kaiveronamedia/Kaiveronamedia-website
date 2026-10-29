@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Text from '../../components/Text.astro';
+import settings from '../../content/settings.json';
+import { getInsights, getPage } from '../../lib/content';
+
+// The index only exists once there is something to list: in production that
+// means at least one published post; preview builds also list drafts.
+export async function getStaticPaths() {
+  const posts = await getInsights();
+  return posts.length > 0 ? [{ params: { index: undefined } }] : [];
+}
+const { data: page } = await getPage('insights');
+const posts = await getInsights();
+const crumbs = [{ label: settings.ui.home, href: '/' }, { label: page.h1 }];
+const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<BaseLayout title={page.seoTitle} description={page.description} breadcrumbs={crumbs} noindex={posts.every((p) => p.data.draft)}>
+  <PageHero title={page.h1} breadcrumbs={crumbs} />
+  <section class="section surface-stone section-tight">
+    <div class="container">
+      <ol class="post-list" role="list">
+        {posts.map((p) => (
+          <li class="post-row">
+            <a href={`/insights/${p.data.slug}`} class="post-link">
+              <span class="post-meta">
+                <time datetime={p.data.publishDate.toISOString().slice(0, 10)}>{fmt.format(p.data.publishDate)}</time>
+                {p.data.draft && <span> · {page.draftLabel}</span>}
+              </span>
+              <span class="post-title"><Text value={p.data.title} /></span>
+              <span class="post-desc"><Text value={p.data.description} /></span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+</BaseLayout>

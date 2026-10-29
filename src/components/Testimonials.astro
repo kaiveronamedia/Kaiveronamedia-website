@@ -1,0 +1,14 @@
+---
+// Real testimonials, verbatim (AGENTS.md hard rule 3). The banned-word scan
+// skips <blockquote data-testimonial>, so never edit the wording here.
+interface Props { items: { quote: string; attribution: string }[] }
+const { items } = Astro.props;
+---
+<div class="quotes">
+  {items.map((t) => (
+    <figure>
+      <blockquote data-testimonial><p>{t.quote}</p></blockquote>
+      <figcaption>{t.attribution}</figcaption>
+    </figure>
+  ))}
+</div>

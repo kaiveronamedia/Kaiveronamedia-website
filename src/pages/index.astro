@@ -1,0 +1,175 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import CtaBand from '../components/CtaBand.astro';
+import FAQ from '../components/FAQ.astro';
+import ProcessFlow from '../components/ProcessFlow.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import SectorCards from '../components/SectorCards.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Text from '../components/Text.astro';
+import YouTubeFacade from '../components/YouTubeFacade.astro';
+import settings from '../content/settings.json';
+import { getFeaturedWork, getHome } from '../lib/content';
+import { SHOW_PLACEHOLDERS } from '../lib/env';
+import { hasPlaceholder, visible, visibleItems } from '../lib/placeholders';
+import { faqPage } from '../lib/schema';
+
+const home = await getHome();
+const { hero, problem, process, included, who, work, retainers } = home;
+const clips = await getFeaturedWork();
+const hasClearedClips = clips.some((c) => c.data.cleared);
+const workNote = hasPlaceholder(work.caseStudy) ? work.howWeBuiltIt : work.caseStudy;
+
+// Retainers are hidden in production until Kai confirms plan names and contents.
+const showRetainers = SHOW_PLACEHOLDERS || (retainers.status === 'live' && !hasPlaceholder(retainers));
+
+// Section numbers are computed from the sections that actually render (max 8).
+const order = ['hero', 'problem', 'process', 'included', 'who', 'work', ...(showRetainers ? ['retainers'] : []), 'faq'];
+const total = order.length;
+const n = (key: string) => order.indexOf(key) + 1;
+const faqItems = visibleItems(home.faq);
+---
+<BaseLayout title={home.seoTitle} description={home.description} cta={false} schema={faqPage(home.faq)}>
+  <!-- 1. Hero, with the testimonials inside the hero band -->
+  <section class="hero surface-ink" aria-labelledby="hero-title" data-section={n('hero')}>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">{hero.eyebrow}</p>
+          <h1 id="hero-title" class="hero-title">{hero.title}</h1>
+          <p class="hero-lead">{hero.sub}</p>
+          <p class="hero-who">{hero.who}</p>
+          <div class="hero-actions">
+            <Button href={settings.cta.href}>{settings.cta.label}</Button>
+            <p class="microcopy">{settings.cta.microcopy}</p>
+          </div>
+          <ul class="chips" role="list">{hero.chips.map((c) => <li class="chip">{c}</li>)}</ul>
+        </div>
+        <div class="hero-plate">
+          <YouTubeFacade id={hero.clip.youtubeId} title={hero.clip.title} poster={hero.clip.poster} placeholder={hero.clip.placeholder} />
+        </div>
+      </div>
+      <Testimonials items={home.testimonials} />
+    </div>
+  </section>
+
+  <!-- 2. Problem -->
+  <section class="section surface-stone" aria-labelledby="problem-title" data-section={n('problem')}>
+    <div class="container">
+      <SectionHeader eyebrow={problem.eyebrow} headingId="problem-title" index={n('problem')} total={total} title={problem.title} />
+      <div class="compare">
+        <div class="compare-col">
+          <p class="compare-label">{problem.haveLabel}</p>
+          <ul role="list" class="compare-list is-have">{problem.have.map((i) => <li>{i}</li>)}</ul>
+        </div>
+        <div class="compare-col">
+          <p class="compare-label">{problem.needLabel}</p>
+          <ul role="list" class="compare-list is-need">{problem.need.map((i) => <li>{i}</li>)}</ul>
+        </div>
+      </div>
+      <p class="section-lead">{problem.body}</p>
+    </div>
+  </section>
+
+  <!-- 3. Process: the Video Lead Engine -->
+  <section class="section surface-stone section-joined" aria-labelledby="process-title" data-section={n('process')}>
+    <div class="container">
+      <SectionHeader eyebrow={process.eyebrow} headingId="process-title" index={n('process')} total={total} title={process.title} />
+      <ProcessFlow stops={process.stops} end={process.end} />
+      <p class="section-link"><Button href={process.link.href} variant="link">{process.link.text}</Button></p>
+    </div>
+  </section>
+
+  <!-- 4. What you get -->
+  <section class="section surface-ink" aria-labelledby="included-title" data-section={n('included')}>
+    <div class="container">
+      <SectionHeader eyebrow={included.eyebrow} headingId="included-title" index={n('included')} total={total} title={included.title} />
+      <ul class="tiles" role="list">
+        {included.items.map((item, i) => (
+          <li class:list={['tile', { 'is-addon': item.type === 'addon' }]}>
+            <span class="tile-no" aria-hidden="true">A{i + 1}</span>
+            <div class="tile-text">
+              <h3 class="tile-title">{item.title}</h3>
+              <p class="tile-body">{item.body}</p>
+            </div>
+            <span class="tile-tag">{item.type === 'addon' ? included.addonLabel : included.includedLabel}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. Who it's for -->
+  <section id="who-its-for" class="section surface-stone" aria-labelledby="who-title" data-section={n('who')}>
+    <div class="container">
+      <SectionHeader eyebrow={who.eyebrow} headingId="who-title" index={n('who')} total={total} title={who.title} />
+      <SectorCards sectors={who.sectors} />
+    </div>
+  </section>
+
+  <!-- 6. Work -->
+  <section class="section surface-ink" aria-labelledby="work-title" data-section={n('work')}>
+    <div class="container">
+      <SectionHeader eyebrow={work.eyebrow} headingId="work-title" index={n('work')} total={total} title={work.title} />
+      {clips.length > 0 ? (
+        <>
+          <div class="work-grid">
+            {clips.map((c, i) => (
+              <YouTubeFacade
+                id={c.data.cleared ? c.data.youtubeId : undefined}
+                title={c.data.title}
+                poster={c.data.poster}
+                aspect={c.data.aspect}
+                hook={c.data.hook}
+                job={c.data.job}
+                placeholder={c.data.hook}
+                n={i + 1}
+                class={c.data.aspect === '16/9' ? 'is-wide' : 'is-tall'}
+              />
+            ))}
+          </div>
+          {visible(workNote) && (
+            <div class="work-note"><Text value={workNote} /></div>
+          )}
+        </>
+      ) : null}
+      {!hasClearedClips && !SHOW_PLACEHOLDERS && (
+        <div class="work-empty">
+          <p class="section-lead">{work.emptyLine}</p>
+          <p class="section-link"><Button href={work.emptyLink.href} variant="link">{work.emptyLink.text}</Button></p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  {showRetainers && (
+    <section class="section surface-stone" aria-labelledby="retainers-title" data-section={n('retainers')}>
+      <div class="container">
+        <SectionHeader eyebrow={retainers.eyebrow} headingId="retainers-title" index={n('retainers')} total={total} title={retainers.title} />
+        <ul class="plans" role="list">
+          {retainers.plans.map((p) => (
+            <li class="plan">
+              <h3 class="plan-name"><Text value={p.name} /></h3>
+              <p class="plan-body"><Text value={p.includes} /></p>
+            </li>
+          ))}
+        </ul>
+        <p class="section-link"><Button href={retainers.link.href} variant="link">{retainers.link.text}</Button></p>
+      </div>
+    </section>
+  )}
+
+  <!-- 8. FAQ + closing CTA -->
+  <section class="section-faq" aria-label="FAQ" data-section={n('faq')}>
+    {faqItems.length > 0 && (
+      <div class="section surface-stone">
+        <div class="container">
+          <SectionHeader headingId="faq-title" index={n('faq')} total={total} />
+          <FAQ items={home.faq} />
+        </div>
+      </div>
+    )}
+    <CtaBand signOff />
+  </section>
+</BaseLayout>

@@ -1,0 +1,22 @@
+---
+import Breadcrumbs, { type Crumb } from './Breadcrumbs.astro';
+import Text from './Text.astro';
+
+interface Props {
+  title: string;
+  label?: string;
+  lead?: string;
+  breadcrumbs?: Crumb[];
+  display?: boolean;
+}
+const { title, label, lead, breadcrumbs, display = false } = Astro.props;
+---
+<section class="page-hero surface-ink">
+  <div class="container">
+    {breadcrumbs && breadcrumbs.length > 1 && <Breadcrumbs items={breadcrumbs} />}
+    {label && <p class="eyebrow">{label}</p>}
+    <h1 class:list={['page-title', { 'is-display': display }]}>{title}</h1>
+    {lead && <p class="page-lead"><Text value={lead} /></p>}
+    <slot />
+  </div>
+</section>
