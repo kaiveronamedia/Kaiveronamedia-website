@@ -7,7 +7,7 @@ interface Props { items: Crumb[] }
 const { items } = Astro.props;
 ---
 <nav class="breadcrumbs" aria-label={settings.ui.breadcrumbLabel}>
-  <ol>
+  <ol class="t-label">
     {items.map((item, i) => (
       <li>
         {item.href && i < items.length - 1 ? <a href={item.href}><Text value={item.label} /></a> : <span aria-current="page"><Text value={item.label} /></span>}

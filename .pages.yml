@@ -161,6 +161,7 @@ content:
         fields:
           - { name: eyebrow, label: Eyebrow, type: string }
           - { name: title, label: Heading (H1), type: string }
+          - { name: heroEmphasis, label: Hero words in italics, type: string }
           - { name: sub, label: Subheading, type: text }
           - { name: who, label: Who-line, type: string }
           - { name: chips, label: Fact chips (allowed facts only), type: string, list: true }

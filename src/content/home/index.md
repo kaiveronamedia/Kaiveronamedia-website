@@ -4,6 +4,7 @@ description: "Video funnels that convert. Short-form clips, an anchor video and 
 hero:
   eyebrow: "Video funnels that convert."
   title: "Your videos get views. Do they get enquiries?"
+  heroEmphasis: "Do they get enquiries?"
   sub: "We build the system that turns your best service into booked enquiries. Not just content, a funnel that actually converts."
   who: "For architects, contractors and brokers across the Midlands and the North."
   chips:

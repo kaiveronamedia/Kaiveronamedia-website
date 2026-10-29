@@ -6,16 +6,16 @@ const { stops, end } = Astro.props;
 <ol class="flow" role="list">
   {stops.map((s) => (
     <li class="stop" tabindex="0">
-      <p class="stop-no"><span>{s.no}</span></p>
-      <p class="stop-stage">{s.stage}</p>
-      <h3 class="stop-title">{s.title}</h3>
+      <p class="stop-no t-label"><span>{s.no}</span></p>
+      <p class="stop-stage t-label">{s.stage}</p>
+      <h3 class="stop-title t-h3">{s.title}</h3>
       <p class="stop-body">{s.body}</p>
-      <div class="stop-reveal"><ul role="list">{s.reveal.map((r) => <li>{r}</li>)}</ul></div>
+      <div class="stop-reveal"><ul role="list" class="t-label">{s.reveal.map((r) => <li>{r}</li>)}</ul></div>
     </li>
   ))}
   <li class="stop stop-end">
-    <p class="stop-no"><span aria-hidden="true">→</span></p>
-    <h3 class="stop-title">{end.label}</h3>
+    <p class="stop-no t-label"><span aria-hidden="true">→</span></p>
+    <h3 class="stop-title t-h3">{end.label}</h3>
     <p class="stop-body">{end.body}</p>
   </li>
 </ol>

@@ -7,6 +7,7 @@ import settings from '../content/settings.json';
 import { getPage } from '../lib/content';
 import { SITE_URL } from '../lib/env';
 import { visible } from '../lib/placeholders';
+import { SHOW_PLACEHOLDERS } from '../lib/env';
 
 const { data: page } = await getPage('about');
 const crumbs = [{ label: settings.ui.home, href: '/' }, { label: settings.nav.find((n) => n.href === '/about')?.label ?? page.h1 }];
@@ -20,22 +21,26 @@ const person = {
   ...(linkedin ? { sameAs: [linkedin] } : {}),
 };
 const [first, ...rest] = page.paragraphs ?? [];
+// Without a headshot, production drops the plate column and the copy spans the grid.
+const showPlate = Boolean(page.headshot) || SHOW_PLACEHOLDERS;
 ---
 <BaseLayout title={page.seoTitle} description={page.description} breadcrumbs={crumbs} schema={[person]}>
   <section class="page-hero surface-ink about">
     <div class="container">
       <Breadcrumbs items={crumbs} />
-      <div class="about-grid">
-        <div class="about-plate">
-          {page.headshot ? (
-            <img src={page.headshot} alt={page.headshotAlt} width="800" height="1000" />
-          ) : (
-            <Placeholder description={page.headshotPlaceholder ?? ''} aspect="4/5" />
-          )}
-        </div>
+      <div class:list={['about-grid', { 'no-plate': !showPlate }]}>
+        {showPlate && (
+          <div class="about-plate">
+            {page.headshot ? (
+              <img src={page.headshot} alt={page.headshotAlt} width="800" height="1000" />
+            ) : (
+              <Placeholder description={page.headshotPlaceholder ?? ''} aspect="4/5" />
+            )}
+          </div>
+        )}
         <div class="about-copy">
-          <h1 class="page-title is-display">{page.h1}</h1>
-          {first && <p class="page-lead">{first}</p>}
+          <h1 class="page-title t-display">{page.h1}</h1>
+          {first && <p class="page-lead t-lead">{first}</p>}
           {rest.map((p) => <p>{p}</p>)}
           {page.background && visible(page.background) && <p><Text value={page.background} /></p>}
         </div>

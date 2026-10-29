@@ -40,15 +40,17 @@ const video = {
   <section class="section surface-ink section-tight">
     <div class="container watch">
       <YouTubeFacade id={clip.youtubeId} title={clip.title} poster={clip.poster} aspect={clip.aspect} hook={clip.hook} job={clip.job} />
-      <p class="section-lead">{clip.summary}</p>
+      <p class="t-lead measure">{clip.summary}</p>
       {clip.job && (
-        <>
-          <h2 class="section-title">{workPage.whatItDidTitle}</h2>
-          <p>{clip.job}</p>
-        </>
+        <div>
+          <h2 class="t-h2">{workPage.whatItDidTitle}</h2>
+          <p class="section-lead">{clip.job}</p>
+        </div>
       )}
-      <h2 class="eyebrow">{workPage.transcriptTitle}</h2>
-      <div class="prose transcript"><Content /></div>
+      <div class="transcript">
+        <h2 class="t-label">{workPage.transcriptTitle}</h2>
+        <div class="prose"><Content /></div>
+      </div>
     </div>
   </section>
 </BaseLayout>

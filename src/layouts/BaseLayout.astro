@@ -1,5 +1,11 @@
 ---
+import '@fontsource/instrument-serif/latin-400.css';
+import '@fontsource/instrument-serif/latin-400-italic.css';
+import '@fontsource-variable/instrument-sans/wght.css';
+import '@fontsource/geist-mono/latin-500.css';
 import '../styles/global.css';
+import serif400 from '@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url';
+import serif400Italic from '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2?url';
 import settings from '../content/settings.json';
 import SEO from '../components/SEO.astro';
 import Schema from '../components/Schema.astro';
@@ -20,6 +26,8 @@ interface Props {
   /** Render the standard closing CTA band before the footer */
   cta?: boolean;
   ctaRoi?: boolean;
+  /** Preload the serif italic too: only where the H1 (the LCP element) has an italic phrase */
+  preloadItalic?: boolean;
 }
 const {
   title,
@@ -31,6 +39,7 @@ const {
   schema = [],
   cta = true,
   ctaRoi = true,
+  preloadItalic = false,
 } = Astro.props;
 // Preview builds are never indexed.
 // The logo/favicon is still to come from Kai; an empty icon avoids a 404 request until then.
@@ -41,6 +50,8 @@ const robotsNoindex = noindex || SHOW_PLACEHOLDERS;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href={serif400} as="font" type="font/woff2" crossorigin />
+    {preloadItalic && <link rel="preload" href={serif400Italic} as="font" type="font/woff2" crossorigin />}
     <SEO title={title} description={description} path={Astro.url.pathname} ogImage={ogImage} ogType={ogType} noindex={robotsNoindex} />
     <link rel="icon" href="data:," />
     <link rel="sitemap" href="/sitemap-index.xml" />

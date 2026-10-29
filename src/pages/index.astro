@@ -3,6 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import CtaBand from '../components/CtaBand.astro';
 import FAQ from '../components/FAQ.astro';
+import HeroPlate from '../components/HeroPlate.astro';
+import HeroTitle from '../components/HeroTitle.astro';
 import ProcessFlow from '../components/ProcessFlow.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import SectorCards from '../components/SectorCards.astro';
@@ -30,91 +32,91 @@ const total = order.length;
 const n = (key: string) => order.indexOf(key) + 1;
 const faqItems = visibleItems(home.faq);
 ---
-<BaseLayout title={home.seoTitle} description={home.description} cta={false} schema={faqPage(home.faq)}>
-  <!-- 1. Hero, with the testimonials inside the hero band -->
+<BaseLayout title={home.seoTitle} description={home.description} cta={false} schema={faqPage(home.faq)} preloadItalic={Boolean(hero.heroEmphasis)}>
+  {/* 1. Hero (Ink), with the testimonials inside the hero band */}
   <section class="hero surface-ink" aria-labelledby="hero-title" data-section={n('hero')}>
     <div class="container">
       <div class="hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">{hero.eyebrow}</p>
-          <h1 id="hero-title" class="hero-title">{hero.title}</h1>
-          <p class="hero-lead">{hero.sub}</p>
-          <p class="hero-who">{hero.who}</p>
+          <p class="t-label"><span aria-hidden="true">{String(n('hero')).padStart(2, '0')} · </span>{hero.eyebrow}</p>
+          <HeroTitle id="hero-title" title={hero.title} emphasis={hero.heroEmphasis} />
+          <p class="hero-lead t-lead">{hero.sub}</p>
+          <p class="hero-who t-small">{hero.who}</p>
           <div class="hero-actions">
             <Button href={settings.cta.href}>{settings.cta.label}</Button>
             <p class="microcopy">{settings.cta.microcopy}</p>
           </div>
-          <ul class="chips" role="list">{hero.chips.map((c) => <li class="chip">{c}</li>)}</ul>
+          <ul class="chips" role="list">{hero.chips.map((c) => <li class="chip t-label">{c}</li>)}</ul>
         </div>
         <div class="hero-plate">
-          <YouTubeFacade id={hero.clip.youtubeId} title={hero.clip.title} poster={hero.clip.poster} placeholder={hero.clip.placeholder} />
+          <HeroPlate clip={hero.clip} />
         </div>
       </div>
       <Testimonials items={home.testimonials} />
     </div>
   </section>
 
-  <!-- 2. Problem -->
+  {/* 2. Problem (Stone) */}
   <section class="section surface-stone" aria-labelledby="problem-title" data-section={n('problem')}>
     <div class="container">
-      <SectionHeader eyebrow={problem.eyebrow} headingId="problem-title" index={n('problem')} total={total} title={problem.title} />
-      <div class="compare">
+      <SectionHeader eyebrow={problem.eyebrow} headingId="problem-title" index={n('problem')} total={total} title={problem.title} wide />
+      <div class="compare reveal">
         <div class="compare-col">
-          <p class="compare-label">{problem.haveLabel}</p>
+          <p class="compare-label t-label">{problem.haveLabel}</p>
           <ul role="list" class="compare-list is-have">{problem.have.map((i) => <li>{i}</li>)}</ul>
         </div>
         <div class="compare-col">
-          <p class="compare-label">{problem.needLabel}</p>
+          <p class="compare-label t-label">{problem.needLabel}</p>
           <ul role="list" class="compare-list is-need">{problem.need.map((i) => <li>{i}</li>)}</ul>
         </div>
       </div>
-      <p class="section-lead">{problem.body}</p>
+      <p class="problem-body t-lead reveal">{problem.body}</p>
     </div>
   </section>
 
-  <!-- 3. Process: the Video Lead Engine -->
-  <section class="section surface-stone section-joined" aria-labelledby="process-title" data-section={n('process')}>
+  {/* 3. Process: the Video Lead Engine (Stone, joined to Problem by the hairline only) */}
+  <section class="section section-joined surface-stone" aria-labelledby="process-title" data-section={n('process')}>
     <div class="container">
       <SectionHeader eyebrow={process.eyebrow} headingId="process-title" index={n('process')} total={total} title={process.title} />
-      <ProcessFlow stops={process.stops} end={process.end} />
+      <div class="reveal"><ProcessFlow stops={process.stops} end={process.end} /></div>
       <p class="section-link"><Button href={process.link.href} variant="link">{process.link.text}</Button></p>
     </div>
   </section>
 
-  <!-- 4. What you get -->
+  {/* 4. What you get (Ink): the specification schedule */}
   <section class="section surface-ink" aria-labelledby="included-title" data-section={n('included')}>
     <div class="container">
       <SectionHeader eyebrow={included.eyebrow} headingId="included-title" index={n('included')} total={total} title={included.title} />
-      <ul class="tiles" role="list">
+      <ul class="tiles reveal" role="list">
         {included.items.map((item, i) => (
           <li class:list={['tile', { 'is-addon': item.type === 'addon' }]}>
-            <span class="tile-no" aria-hidden="true">A{i + 1}</span>
+            <span class="tile-no t-label" aria-hidden="true">A{i + 1}</span>
             <div class="tile-text">
-              <h3 class="tile-title">{item.title}</h3>
+              <h3 class="tile-title t-h3">{item.title}</h3>
               <p class="tile-body">{item.body}</p>
             </div>
-            <span class="tile-tag">{item.type === 'addon' ? included.addonLabel : included.includedLabel}</span>
+            <span class="tile-tag t-label">{item.type === 'addon' ? included.addonLabel : included.includedLabel}</span>
           </li>
         ))}
       </ul>
     </div>
   </section>
 
-  <!-- 5. Who it's for -->
+  {/* 5. Who it's for (Stone): the sector index */}
   <section id="who-its-for" class="section surface-stone" aria-labelledby="who-title" data-section={n('who')}>
     <div class="container">
       <SectionHeader eyebrow={who.eyebrow} headingId="who-title" index={n('who')} total={total} title={who.title} />
-      <SectorCards sectors={who.sectors} />
+      <div class="reveal"><SectorCards sectors={who.sectors} /></div>
     </div>
   </section>
 
-  <!-- 6. Work -->
+  {/* 6. Work (Ink) */}
   <section class="section surface-ink" aria-labelledby="work-title" data-section={n('work')}>
     <div class="container">
       <SectionHeader eyebrow={work.eyebrow} headingId="work-title" index={n('work')} total={total} title={work.title} />
-      {clips.length > 0 ? (
+      {clips.length > 0 && (
         <>
-          <div class="work-grid">
+          <div class="work-grid reveal">
             {clips.map((c, i) => (
               <YouTubeFacade
                 id={c.data.cleared ? c.data.youtubeId : undefined}
@@ -129,14 +131,12 @@ const faqItems = visibleItems(home.faq);
               />
             ))}
           </div>
-          {visible(workNote) && (
-            <div class="work-note"><Text value={workNote} /></div>
-          )}
+          {visible(workNote) && <div class="work-note"><Text value={workNote} /></div>}
         </>
-      ) : null}
+      )}
       {!hasClearedClips && !SHOW_PLACEHOLDERS && (
         <div class="work-empty">
-          <p class="section-lead">{work.emptyLine}</p>
+          <p class="section-lead t-lead">{work.emptyLine}</p>
           <p class="section-link"><Button href={work.emptyLink.href} variant="link">{work.emptyLink.text}</Button></p>
         </div>
       )}
@@ -147,7 +147,7 @@ const faqItems = visibleItems(home.faq);
     <section class="section surface-stone" aria-labelledby="retainers-title" data-section={n('retainers')}>
       <div class="container">
         <SectionHeader eyebrow={retainers.eyebrow} headingId="retainers-title" index={n('retainers')} total={total} title={retainers.title} />
-        <ul class="plans" role="list">
+        <ul class="plans reveal" role="list">
           {retainers.plans.map((p) => (
             <li class="plan">
               <h3 class="plan-name"><Text value={p.name} /></h3>
@@ -160,13 +160,13 @@ const faqItems = visibleItems(home.faq);
     </section>
   )}
 
-  <!-- 8. FAQ + closing CTA -->
-  <section class="section-faq" aria-label="FAQ" data-section={n('faq')}>
+  {/* 8. FAQ (Stone) + closing CTA (Ink) */}
+  <section class="section-faq" data-section={n('faq')}>
     {faqItems.length > 0 && (
-      <div class="section surface-stone">
+      <div class:list={['section surface-stone', { 'section-joined': showRetainers }]}>
         <div class="container">
           <SectionHeader headingId="faq-title" index={n('faq')} total={total} />
-          <FAQ items={home.faq} />
+          <div class="reveal"><FAQ items={home.faq} /></div>
         </div>
       </div>
     )}
