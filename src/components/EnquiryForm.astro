@@ -1,0 +1,48 @@
+---
+// Web3Forms enquiry form. Works without JavaScript: a plain POST, after which
+// Web3Forms redirects to /thanks. The access key comes from PUBLIC_WEB3FORMS_KEY.
+// With no key the form isn't rendered (a placeholder shows in preview builds).
+import Placeholder from './Placeholder.astro';
+import { WEB3FORMS_KEY, DEPLOY_URL } from '../lib/env';
+
+interface Props {
+  labels: {
+    nameLabel: string;
+    emailLabel: string;
+    firmLabel: string;
+    messageLabel: string;
+    submitLabel: string;
+    subject: string;
+    keyPlaceholder: string;
+  };
+}
+const { labels } = Astro.props;
+---
+{WEB3FORMS_KEY ? (
+  <form class="form" action="https://api.web3forms.com/submit" method="POST" accept-charset="UTF-8">
+    <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
+    <input type="hidden" name="subject" value={labels.subject} />
+    <input type="hidden" name="from_name" value="veronamedia.co.uk" />
+    <input type="hidden" name="redirect" value={`${DEPLOY_URL}/thanks`} />
+    <input type="checkbox" name="botcheck" style="display: none" />
+    <div class="field">
+      <label for="f-name">{labels.nameLabel}</label>
+      <input id="f-name" name="name" type="text" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="f-email">{labels.emailLabel}</label>
+      <input id="f-email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for="f-firm">{labels.firmLabel}</label>
+      <input id="f-firm" name="firm" type="text" autocomplete="organization" />
+    </div>
+    <div class="field">
+      <label for="f-message">{labels.messageLabel}</label>
+      <textarea id="f-message" name="message" rows="6" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary"><span class="btn-label">{labels.submitLabel}</span><span class="btn-arrow" aria-hidden="true">→</span></button>
+  </form>
+) : (
+  <Placeholder description={labels.keyPlaceholder} />
+)}

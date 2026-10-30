@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import PageHero from '../components/PageHero.astro';
+import settings from '../content/settings.json';
+import { getPage } from '../lib/content';
+
+const { data: page } = await getPage('404');
+---
+<BaseLayout title={page.seoTitle} description={page.description} noindex cta={false}>
+  <PageHero title={page.h1}>
+    <ul class="link-list" role="list">
+      {(page.links ?? []).map((l) => <li><Button href={l.href} variant="link">{l.label}</Button></li>)}
+    </ul>
+    <div class="hero-actions">
+      <Button href={settings.cta.href}>{settings.cta.label}</Button>
+      <p class="microcopy">{settings.cta.microcopy}</p>
+    </div>
+  </PageHero>
+</BaseLayout>

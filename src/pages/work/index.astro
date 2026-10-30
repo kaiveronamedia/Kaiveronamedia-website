@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import YouTubeFacade from '../../components/YouTubeFacade.astro';
+import settings from '../../content/settings.json';
+import { getFeaturedWork, getClearedWork, getPage } from '../../lib/content';
+
+const { data: page } = await getPage('work');
+const cleared = await getClearedWork();
+// Preview shows the placeholder grid; production shows only cleared clips,
+// or the "coming soon" line (plus the CTA band) until one exists.
+const clips = cleared.length > 0 ? cleared : await getFeaturedWork();
+const crumbs = [{ label: settings.ui.home, href: '/' }, { label: page.label ?? page.h1 }];
+---
+<BaseLayout title={page.seoTitle} description={page.description} breadcrumbs={crumbs} noindex={cleared.length === 0}>
+  <PageHero title={page.h1} label={page.label} breadcrumbs={crumbs} lead={clips.length === 0 ? page.emptyLine : undefined} />
+  {clips.length > 0 && (
+    <section class="section surface-ink section-tight">
+      <div class="container">
+        <div class="work-grid">
+          {clips.map((c, i) => (
+            <div class:list={['work-item', c.data.aspect === '16/9' ? 'is-wide' : 'is-tall']}>
+              <YouTubeFacade
+                id={c.data.cleared ? c.data.youtubeId : undefined}
+                title={c.data.title}
+                poster={c.data.poster}
+                aspect={c.data.aspect}
+                hook={c.data.hook}
+                job={c.data.job}
+                placeholder={c.data.hook}
+                n={i + 1}
+              />
+              {c.data.cleared && <a class="work-more" href={`/work/${c.data.slug}`}>{c.data.title}</a>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>

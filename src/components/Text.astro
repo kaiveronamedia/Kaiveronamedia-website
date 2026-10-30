@@ -1,0 +1,12 @@
+---
+// Renders a content string: inline Markdown for text, Placeholder for tokens.
+import Placeholder from './Placeholder.astro';
+import { segments } from '../lib/placeholders';
+import { inlineMarkdown } from '../lib/inline';
+
+interface Props { value: string }
+const parts = segments(Astro.props.value ?? '');
+---
+{parts.map((part) =>
+  part.type === 'text' ? <Fragment set:html={inlineMarkdown(part.value)} /> : <Placeholder description={part.value} inline />,
+)}

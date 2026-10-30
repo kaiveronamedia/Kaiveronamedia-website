@@ -1,0 +1,34 @@
+---
+import settings from '../content/settings.json';
+import { SITE_URL } from '../lib/env';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+}
+const { title, description, path, ogImage = '/og-default.png', ogType = 'website', noindex = false } = Astro.props;
+const clean = path === '/' ? '' : path.replace(/\/$/, '').replace(/\.html$/, '');
+const canonical = `${SITE_URL}${clean || '/'}`;
+const image = new URL(ogImage, SITE_URL).href;
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+<meta property="og:site_name" content={settings.siteName} />
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={image} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_GB" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />

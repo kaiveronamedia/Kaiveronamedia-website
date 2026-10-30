@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://veronamedia.co.uk/sitemap-index.xml

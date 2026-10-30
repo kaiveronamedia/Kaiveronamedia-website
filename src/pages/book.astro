@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CalEmbed from '../components/CalEmbed.astro';
+import PageHero from '../components/PageHero.astro';
+import settings from '../content/settings.json';
+import { getPage } from '../lib/content';
+
+const { data: page } = await getPage('book');
+const crumbs = [{ label: settings.ui.home, href: '/' }, { label: page.h1 }];
+---
+<BaseLayout title={page.seoTitle} description={page.description} breadcrumbs={crumbs} cta={false}>
+  <PageHero title={page.h1} lead={page.lead} breadcrumbs={crumbs} />
+  <section class="section surface-stone section-tight">
+    <div class="container">
+      <CalEmbed fallbackText={page.fallbackText!} />
+    </div>
+  </section>
+</BaseLayout>

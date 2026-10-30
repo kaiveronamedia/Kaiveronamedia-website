@@ -1,0 +1,62 @@
+{
+  "siteName": "Verona Media",
+  "strapline": "Video funnels that convert.",
+  "description": "The system that turns your best service into booked enquiries. Not just content, a funnel that actually converts.",
+  "email": "media@kaiverona.co.uk",
+  "founder": "Kai Verona",
+  "founderJobTitle": "Founder",
+  "locality": "Nottingham",
+  "areaServed": ["Nottingham", "Sheffield", "Derby", "Leeds", "Mansfield"],
+  "logoUrl": "",
+  "cta": {
+    "label": "Map my funnel for free",
+    "href": "/book",
+    "microcopy": "30 minutes. No pitch. You keep the plan either way."
+  },
+  "nav": [
+    { "label": "How it works", "href": "/how-it-works" },
+    {
+      "label": "Who it's for",
+      "href": "/#who-its-for",
+      "children": [
+        { "label": "Architects", "href": "/video-for-architects" },
+        { "label": "Construction", "href": "/video-for-construction" },
+        { "label": "Mortgage & finance", "href": "/video-for-mortgage-brokers" }
+      ]
+    },
+    { "label": "Work", "href": "/work" },
+    { "label": "ROI calculator", "href": "/roi-calculator" },
+    { "label": "About", "href": "/about" }
+  ],
+  "ctaBand": {
+    "title": "Want to see what your funnel would look like?",
+    "body": "You shouldn't have to guess what would work for your firm. In 30 minutes, I'll map it with you: we'll pick your highest-value service and map out exactly what we'd build. You keep the plan whether or not you work with us.",
+    "roiLinkText": "Not ready to talk? See what your funnel could bring in",
+    "roiLinkHref": "/roi-calculator",
+    "signOff": "Kai Verona · Nottingham"
+  },
+  "footer": {
+    "tagline": "Verona Media · Video funnels that convert.",
+    "area": "Based in Nottingham. Filming across Nottingham, Sheffield, Derby, Leeds and Mansfield.",
+    "links": [
+      { "label": "Pricing", "href": "/pricing" },
+      { "label": "Contact", "href": "/contact" },
+      { "label": "Privacy policy", "href": "/privacy-policy" }
+    ],
+    "insightsLink": { "label": "Insights", "href": "/insights" },
+    "copyright": "Verona Media"
+  },
+  "socials": [
+    { "label": "LinkedIn", "href": "https://www.linkedin.com/in/kai-verona-103141249/" },
+    { "label": "Instagram", "href": "https://www.instagram.com/kaiveronamedia/" },
+    { "label": "X", "href": "https://x.com/KaiVeronaMedia" }
+  ],
+  "ui": {
+    "home": "Home",
+    "breadcrumbLabel": "Breadcrumb",
+    "menu": "Menu",
+    "skipLink": "Skip to content",
+    "playVideo": "Play video",
+    "watchOnYouTube": "Watch on YouTube"
+  }
+}
