@@ -87,4 +87,18 @@ for (const file of [...walk(join(root, 'src/content')), ...walk(join(root, 'src/
   }
 }
 
+// Voice (AGENTS.md §3): copy leads with "you", never "we". Checks every quoted
+// content string and every Markdown paragraph. Testimonials never start with "We"
+// and legal text doesn't either, so there are no exemptions to manage yet.
+const leadsWithWe = /^(We|We'(?:ll|re|ve|d)|Our)\b/;
+for (const file of walk(join(root, 'src/content'))) {
+  if (!/\.(md|json)$/.test(file)) continue;
+  const text = read(file);
+  const strings = [...text.matchAll(/"((?:[^"\\]|\\.)*)"/g)].map((m) => m[1]);
+  const body = text.replace(/^---[\s\S]*?---/, '').split(/\n{2,}/).map((p) => p.trim().replace(/^[-*>#\s]+/, ''));
+  for (const s of [...strings, ...body]) {
+    if (leadsWithWe.test(s)) errors.push(`${rel(file)}: leads with "we" (start from the visitor: "You…"): "${s.slice(0, 60)}…"`);
+  }
+}
+
 if (!report('copy rules', errors, warnings)) process.exitCode = 1;

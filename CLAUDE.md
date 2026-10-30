@@ -12,6 +12,7 @@ Read these before changing anything, in this order:
 Quick rules:
 
 - Section labels use a middle dot, never an em dash: `02 · The problem`. Em dashes are banned everywhere.
+- Copy leads with "you", never "we": the visitor's pain first, then what we do about it, in full sentences (AGENTS.md §3). The copy in `src/content/**` is ahead of the info file on voice.
 - Never invent copy, figures, testimonials, client names, logos or prices. If something isn't covered, add `[[PLACEHOLDER: question]]` and say so in the PR.
 - Copy lives in `src/content/**` (edited through Pages CMS, see `.pages.yml`), never hard-coded in components.
 - `npm run check` must pass before any PR. It runs `astro check`, a production build, the copy scan (banned words, homepage `£`, placeholders, em dashes, SEO lengths), the link check and the redirect test.

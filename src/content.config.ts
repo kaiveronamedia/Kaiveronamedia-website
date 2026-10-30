@@ -100,7 +100,7 @@ const pages = defineCollection({
     lead: z.string().optional(),
     // how-it-works
     step0: z
-      .object({ title: z.string(), label: z.string(), items: z.array(z.string()), close: z.string() })
+      .object({ title: z.string(), label: z.string(), intro: z.string().optional(), items: z.array(z.string()), close: z.string() })
       .optional(),
     parts: z
       .object({

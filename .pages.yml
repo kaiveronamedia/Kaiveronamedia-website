@@ -279,6 +279,7 @@ content:
         fields:
           - { name: title, label: Heading, type: string }
           - { name: label, label: Label, type: string }
+          - { name: intro, label: Intro (the pain, in the visitor's words), type: text }
           - { name: items, label: Steps, type: string, list: true }
           - { name: close, label: Closing line, type: string }
       - name: parts

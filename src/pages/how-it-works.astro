@@ -20,6 +20,7 @@ const parts = page.parts!;
   <section class="section surface-stone" aria-labelledby="step0-title">
     <div class="container">
       <SectionHeader eyebrow={step0.label} headingId="step0-title" title={step0.title} />
+      {step0.intro && <p class="section-lead">{step0.intro}</p>}
       <ol class="step-list">{step0.items.map((item) => <li>{item}</li>)}</ol>
       <p class="section-lead">{step0.close}</p>
     </div>
