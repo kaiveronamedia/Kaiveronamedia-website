@@ -1,0 +1,10 @@
+---
+// The H1, with the optional emphasised phrase (content field `heroEmphasis`)
+// set in serif italic. The visible text is unchanged; only the phrase is wrapped.
+interface Props { title: string; emphasis?: string; id?: string; class?: string }
+const { title, emphasis, id, class: cls } = Astro.props;
+const at = emphasis ? title.indexOf(emphasis) : -1;
+---
+<h1 id={id} class:list={['hero-title t-display', cls]}>
+  {at < 0 ? title : <>{title.slice(0, at)}<em>{emphasis}</em>{title.slice(at + emphasis!.length)}</>}
+</h1>

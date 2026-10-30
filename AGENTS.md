@@ -88,30 +88,26 @@ brands, businesses, clients
     - CI fails if the token appears in production HTML.
     - Never "fill in" a placeholder with plausible-sounding copy.
 
-## 5. Design tokens
+## 5. Design tokens ("The Drawing Set", Oct 2026; full spec in DESIGN_BRIEF.md)
 
 | Token | Hex | Use |
 |---|---|---|
-| `navy` | `#0E1E4E` | Page background (dark theme by default) |
-| `deep` | `#0A1638` | Alternating section bands, footer |
-| `teal` | `#3D9494` | Primary buttons, accents, left borders. **Not** for small text on navy (4.46:1). |
-| `teal-light` | `#4FB3B2` | Highlighted words, numbers, links and small accent text on navy (6.41:1) |
-| `paper` | `#F2F2F2` | Body text (14.27:1 on navy) |
-| `line` | `rgba(242,242,242,.13)` | Decorative dividers and card borders only. Not form inputs (1.44:1). |
-| `muted` | `rgba(242,242,242,.66)` | Secondary text (6.88:1 on navy) |
+| `ink` | `#0B1322` | Dark ground (hero, What you get, Work, CTA, footer) |
+| `ink-2` / `ink-3` | `#121C2E` / `#1A263C` | Raised / hover surfaces on dark |
+| `stone` / `stone-2` | `#F3F0EA` / `#E8E3D9` | Light ground / raised light surface |
+| `graphite` / `slate` | `#16191F` / `#585E68` | Text / secondary text on stone (15.5:1 / 5.7:1) |
+| `mist` / `fog` | `#ECE9E3` / `#A7ADB8` | Text / secondary text on ink (15.3:1 / 8.2:1) |
+| `teal` | `#3D9494` | Brand. Primary button on ink (ink label, 5.2:1); strokes. Never text on stone (3.15:1). |
+| `teal-deep` | `#1F5C59` | Primary button on stone (stone label, 6.75:1); links and emphasis on stone |
+| `teal-light` | `#7CC4BE` | Links, emphasis, focus rings on ink (9.3:1) |
 
-- **Primary button:** teal background with **deep navy `#0A1638` label text** (4.95:1).
-  - Paper text on teal is only 3.2:1, so it is allowed only at ≥ 19px bold.
-  - Labels are uppercase Space Grotesk 700, with a soft teal glow that lifts on hover.
-- **Headings, buttons, numbers and eyebrows:** Space Grotesk 700 (500 allowed for eyebrows).
-- **Body:** Raleway 400–600.
-- Self-host both fonts with `@fontsource` (no Google Fonts `<link>`). Preload the Space Grotesk 700 woff2 file.
-- **Eyebrow:** small uppercase teal-light label above an H2.
-- **Layout:**
-  - Content width 1080px.
-  - One responsive breakpoint at 900px. Below it, everything collapses to one column and horizontal flows become vertical.
-  - Hover reveals are always visible on touch and narrow screens.
-- **FAQ:** native `<details>/<summary>`, no JavaScript.
+- Fonts (self-hosted via Fontsource): Instrument Serif 400/italic for headings and quotes; Instrument Sans (variable) for body, UI and buttons; Geist Mono 500 for uppercase labels only. Preload Instrument Serif 400 latin.
+- Headings are sentence case, serif, weight 400. Uppercase only in mono labels (+0.08em tracking).
+- Section labels use a middle dot, never an em dash: `02 · The problem`.
+- Buttons: 52px, 2px radius, sentence case, no glow. One solid teal button per screen; the header CTA is an outline button.
+- Hairlines, not boxes; no shadows, glows or gradients. Container 1320px, 12-column grid, one breakpoint at 900px, fluid type with clamp().
+- Motion is CSS-only and respects prefers-reduced-motion. No autoplay, carousels, marquees, parallax or preloaders.
+- FAQ: native <details>/<summary>, no JavaScript.
 
 ## 6. Engineering rules
 

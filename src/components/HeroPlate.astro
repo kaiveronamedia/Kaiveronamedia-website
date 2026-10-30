@@ -1,0 +1,17 @@
+---
+// Right-hand plate in a hero: the cleared clip if there is one; otherwise the
+// funnel drawing in production, or the amber placeholder in preview builds.
+import FunnelPlate from './FunnelPlate.astro';
+import YouTubeFacade from './YouTubeFacade.astro';
+import { SHOW_PLACEHOLDERS } from '../lib/env';
+
+interface Props { clip: { youtubeId: string; title: string; poster: string; placeholder: string } }
+const { clip } = Astro.props;
+---
+{clip.youtubeId ? (
+  <YouTubeFacade id={clip.youtubeId} title={clip.title} poster={clip.poster} />
+) : SHOW_PLACEHOLDERS ? (
+  <YouTubeFacade title={clip.title} placeholder={clip.placeholder} />
+) : (
+  <FunnelPlate />
+)}

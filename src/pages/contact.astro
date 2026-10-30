@@ -4,6 +4,7 @@ import EnquiryForm from '../components/EnquiryForm.astro';
 import PageHero from '../components/PageHero.astro';
 import settings from '../content/settings.json';
 import { getPage } from '../lib/content';
+import { SHOW_PLACEHOLDERS, WEB3FORMS_KEY } from '../lib/env';
 
 const { data: page } = await getPage('contact');
 const crumbs = [{ label: settings.ui.home, href: '/' }, { label: page.h1 }];
@@ -12,9 +13,12 @@ const lead = page.lead?.replace(settings.email, `[${settings.email}](mailto:${se
 ---
 <BaseLayout title={page.seoTitle} description={page.description} breadcrumbs={crumbs}>
   <PageHero title={page.h1} lead={lead} breadcrumbs={crumbs} />
-  <section class="section surface-stone section-tight">
-    <div class="container narrow">
-      <EnquiryForm labels={page.form!} />
-    </div>
-  </section>
+  {/* Until PUBLIC_WEB3FORMS_KEY is set, production shows the email address only. */}
+  {(WEB3FORMS_KEY || SHOW_PLACEHOLDERS) && (
+    <section class="section surface-stone section-tight">
+      <div class="container narrow">
+        <EnquiryForm labels={page.form!} />
+      </div>
+    </section>
+  )}
 </BaseLayout>
