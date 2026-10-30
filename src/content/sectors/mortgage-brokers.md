@@ -3,10 +3,10 @@ slug: "video-for-mortgage-brokers"
 order: 3
 name: "Mortgage & finance"
 seoTitle: "Video for Mortgage Brokers & Advisers | Verona Media"
-description: "Video funnels for mortgage brokers and financial advisers, built around your compliance sign-off. Build trust before the first call."
-qualifier: "For firms where one new instruction is worth £5k or more"
-h1: "Video for mortgage brokers and financial advisers: trust before the first call."
-sub: "Right now prospects choose a broker from a Google review and a headshot. Video does in 90 seconds what three phone calls do."
+description: "Your prospects choose on trust before they ever call. Video funnels for mortgage brokers and financial advisers, built around your compliance sign-off."
+qualifier: "If one new instruction is worth £5k or more to your firm"
+h1: "Your prospects choose a broker from a Google review and a headshot."
+sub: "You get video that builds trust before the first call, for mortgage brokers and financial advisers. It does in 90 seconds what three phone calls do."
 clip:
   youtubeId: ""
   poster: ""
@@ -18,7 +18,7 @@ problem:
 compliance:
   label: "Compliance"
   title: "Built around your compliance sign-off"
-  body: "Everything I produce goes through your compliance sign-off before anything gets scheduled. I build the approval step into the workflow rather than bolting it on afterwards."
+  body: "You need compliance sign-off on everything, and it can't be an afterthought. Everything I produce goes through your sign-off before anything gets scheduled, with the approval step built into the workflow rather than bolted on afterwards."
 howTitle: "How it works"
 whoTitle: "Who it's for"
 who:

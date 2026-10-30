@@ -35,6 +35,8 @@ When this file and any other text disagree, this file wins. When you are unsure,
 
 ## 3. Voice
 
+> **Kai's rule, 30 Oct 2026: lead with "you", pain first.** Every heading, paragraph, answer and description opens from the visitor's side ("You…", "Your…"), never with "We", "Our" or "I". Name the visitor's problem first, then say what we do about it, in full sentences. "We" and "I" can follow; they never lead. `npm run check` fails any content line that starts with "We" or "Our". Exempt: testimonials (verbatim), button labels (first person, below), legal text and short labels. Where this conflicts with older copy in `VERONA_WEBSITE_INFO_FOR_CLAUDE.md`, the copy in `src/content/**` wins.
+
 - Speak to the visitor, not about us.
   - Any skill we mention must read as reassurance for them, never as a credential for us.
 - Name who it's for within the first screen.

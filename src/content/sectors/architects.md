@@ -3,10 +3,10 @@ slug: "video-for-architects"
 order: 1
 name: "Architects"
 seoTitle: "Video Marketing for Architects | Verona Media"
-description: "Video funnels for architecture practices in the Midlands and the North. Show how you think, not just what you built, and turn it into enquiries."
-qualifier: "For firms where one new instruction is worth £5k or more"
-h1: "One extra project pays for the whole build."
-sub: "Video funnels for architecture practices across the Midlands and the North. Your portfolio shows what you built. Video shows how you think, and how you think is the decision."
+description: "Your portfolio shows what you built, not how you think. Video funnels for architecture practices in the Midlands and the North turn that into enquiries."
+qualifier: "If one new instruction is worth £5k or more to your firm"
+h1: "Your portfolio shows what you built. Not how you think."
+sub: "You get a video funnel that shows how you think, and how you think is the decision. For architecture practices across the Midlands and the North, one extra project pays for the whole build."
 clip:
   youtubeId: ""
   poster: ""
@@ -14,7 +14,7 @@ clip:
   placeholder: "[[PLACEHOLDER: one cleared 9:16 clip for architects, YouTube ID + poster]]"
 problem:
   title: "The problem"
-  body: "When someone is choosing an architect for a major project, how you think *is* the decision. That's a video problem, not a photography problem, and almost every practice is solving it with photographs. You already believe in showing work. You're fighting the format, not the premise."
+  body: "Your next client is choosing an architect for a major project, and how you think *is* the decision. That's a video problem, not a photography problem, yet almost every practice is solving it with photographs. You already believe in showing work. You're fighting the format, not the premise."
 roiLine: "[[PLACEHOLDER: Kai to approve: \"You earn around £2,000 for a planning application alone. One extra client pays for the build, before the project fee.\" It is an industry estimate from Notion's ICP, not a result. Hide unless approved.]]"
 roiLink:
   text: "Not ready to talk? See what your funnel could bring in"
@@ -36,5 +36,5 @@ faq:
   - question: "What do you film at a practice?"
     answer: "[[PLACEHOLDER: Kai to write]]"
   - question: "How long until it's live?"
-    answer: "4 weeks to live, from 1 filming day."
+    answer: "You need 1 filming day, then it's 4 weeks to live."
 ---

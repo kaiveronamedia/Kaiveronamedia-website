@@ -1,6 +1,6 @@
 ---
 seoTitle: "Privacy Policy | Verona Media"
-description: "How Verona Media collects, uses and protects personal data from enquiries, bookings and website analytics."
+description: "Your data, explained: how Verona Media collects, uses and protects personal data from enquiries, bookings and website analytics on this site."
 h1: "Privacy policy"
 portedText: "[[PLACEHOLDER: port the current policy text from https://www.kaiverona.co.uk/privacy-policy (it couldn't be fetched from the build session), replacing 'Kai Verona Media' with 'Verona Media']]"
 reviewNote: "[[PLACEHOLDER: Kai to review the updated policy before launch]]"

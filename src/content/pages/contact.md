@@ -1,8 +1,8 @@
 ---
 seoTitle: "Contact | Verona Media"
-description: "Get in touch with Verona Media about a video funnel for your firm. Email media@kaiverona.co.uk or send an enquiry here."
+description: "You can reach Verona Media about a video funnel for your firm. Email media@kaiverona.co.uk or send an enquiry through this page."
 h1: "Contact"
-lead: "Get in touch with Verona Media about a video funnel for your firm. Email media@kaiverona.co.uk or send an enquiry here."
+lead: "You've got a question about a video funnel for your firm? Email media@kaiverona.co.uk or send an enquiry here."
 form:
   nameLabel: "Name"
   emailLabel: "Email"
