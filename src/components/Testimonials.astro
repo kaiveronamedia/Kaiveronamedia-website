@@ -8,7 +8,7 @@ const { items } = Astro.props;
   {items.map((t) => (
     <figure>
       <blockquote data-testimonial><p>{t.quote}</p></blockquote>
-      <figcaption>{t.attribution}</figcaption>
+      <figcaption class="t-label">{t.attribution}</figcaption>
     </figure>
   ))}
 </div>

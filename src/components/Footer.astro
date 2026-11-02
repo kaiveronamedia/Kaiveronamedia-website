@@ -20,8 +20,9 @@ const year = new Date().getFullYear();
       </ul>
     </div>
   </div>
-  <div class="container">
-    <div class="footer-mark" aria-hidden="true"><span>{settings.siteName}</span></div>
-    <p class="footer-legal">© {year} {settings.footer.copyright}</p>
+  <div class="container footer-mark-wrap">
+    {/* Decorative logotype, drawn as generated content so it isn't read or contrast-checked as text. */}
+    <div class="footer-mark" aria-hidden="true"><span data-mark={settings.siteName}></span></div>
+    <p class="footer-legal t-label">© {year} {settings.footer.copyright}</p>
   </div>
 </footer>

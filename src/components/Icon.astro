@@ -1,0 +1,25 @@
+---
+// Line icons drawn in the site's hairline style (1.5px strokes, currentColor).
+// Every path has pathLength="1" so CSS can "draw" it in on scroll.
+// Decorative only: the text beside each icon carries the meaning.
+interface Props { name: string; class?: string }
+const { name, class: cls } = Astro.props;
+
+const paths: Record<string, string[]> = {
+  clock: ['M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z', 'M12 7v5l3.5 2'],
+  wave: ['M2 12c2.5-5 4.5-5 7 0s4.5 5 7 0 4.5-5 6 0', 'M2 19h20'],
+  eye: ['M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z', 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z'],
+  'eye-off': ['M2 12s3.6-7 10-7c2 0 3.7.7 5.1 1.6M22 12s-3.6 7-10 7c-2 0-3.7-.7-5.1-1.6', 'M9.9 9.9a3 3 0 0 0 4.2 4.2', 'M3 3l18 18'],
+  phone: ['M8 2h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z', 'M11 18h2', 'M10 8.5v5l4-2.5-4-2.5Z'],
+  play: ['M3 5h18v14H3Z', 'M10 9v6l5-3-5-3Z'],
+  form: ['M5 3h14v18H5Z', 'M8 8h8', 'M8 12h8', 'M8 16h4'],
+  calendar: ['M4 5h16v15H4Z', 'M4 9h16', 'M8 3v4', 'M16 3v4', 'M9 14.5l2 2 4-4'],
+  camera: ['M3 7h4l2-3h6l2 3h4v13H3Z', 'M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z'],
+  mail: ['M3 5h18v14H3Z', 'M3 6l9 7 9-7'],
+  megaphone: ['M3 10v4h3l8 5V5l-8 5H3Z', 'M18 9a4 4 0 0 1 0 6', 'M7 14l1 6'],
+};
+const d = paths[name] ?? [];
+---
+<svg class:list={['icon', cls]} viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {d.map((p) => <path d={p} pathLength="1" />)}
+</svg>

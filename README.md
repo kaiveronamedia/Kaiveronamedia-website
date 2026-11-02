@@ -37,6 +37,10 @@ Set these in Cloudflare Pages (Settings → Environment variables). See `.env.ex
 - `src/content/insights/*.md`: blog posts. `draft: true` posts only appear in preview builds. The footer link and the `/insights` index appear once a post is published
 - `public/_redirects`: old Squarespace URLs → new pages
 
+## Design system
+
+"The Drawing Set" (`DESIGN_BRIEF.md`). Tokens and every component style live in `src/styles/global.css`. Components read only the variables a surface sets (`.surface-ink` / `.surface-stone`), so the same component works on either band. Fonts are self-hosted with Fontsource (Instrument Serif, Instrument Sans, Geist Mono). Motion is CSS-only and switched off under `prefers-reduced-motion`. Tailwind supplies the theme layer and preflight only; automatic class scanning is off, so style with the semantic classes.
+
 ## Placeholders
 
 Anything still to come from Kai is written as `[[PLACEHOLDER: what's needed]]` in content. Preview builds show it; production builds drop the block it's in, and `npm run check` fails if a token ever reaches production HTML.

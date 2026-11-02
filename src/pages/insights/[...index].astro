@@ -24,7 +24,7 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
         {posts.map((p) => (
           <li class="post-row">
             <a href={`/insights/${p.data.slug}`} class="post-link">
-              <span class="post-meta">
+              <span class="post-meta t-label">
                 <time datetime={p.data.publishDate.toISOString().slice(0, 10)}>{fmt.format(p.data.publishDate)}</time>
                 {p.data.draft && <span> · {page.draftLabel}</span>}
               </span>

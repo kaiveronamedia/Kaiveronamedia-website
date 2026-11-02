@@ -2,15 +2,16 @@
 interface Sector { name: string; pitch: string; href: string }
 interface Props { sectors: Sector[] }
 const { sectors } = Astro.props;
-const id = (name: string) => `sector-${name.toLowerCase().replace(/[^a-z]+/g, '-')}`;
 ---
 <ol class="who-index" role="list">
   {sectors.map((s, i) => (
     <li>
-      <a class="who-row" href={s.href} aria-labelledby={id(s.name)} aria-describedby={`${id(s.name)}-p`}>
-        <span class="who-no" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-        <span class="who-name" id={id(s.name)}>{s.name}</span>
-        <span class="who-pitch" id={`${id(s.name)}-p`}>{s.pitch}</span>
+      {/* The link's name is its visible text (sector name first, then the pitch),
+          which keeps WCAG 2.5.3 "label in name" intact. */}
+      <a class="who-row" href={s.href}>
+        <span class="who-no t-label" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+        <span class="who-name">{s.name}</span>
+        <span class="who-pitch">{s.pitch}</span>
         <span class="who-arrow" aria-hidden="true">→</span>
       </a>
     </li>

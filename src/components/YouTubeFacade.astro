@@ -1,6 +1,7 @@
 ---
-// Click-to-play YouTube. Nothing is requested from YouTube until the click
-// (posters are local files), and playback uses youtube-nocookie.com.
+// Click-to-play YouTube, presented as a framed plate with a lower-third caption
+// underneath (never over the picture). Nothing is requested from YouTube until
+// the click (posters are local files), and playback uses youtube-nocookie.com.
 // With no video ID the Placeholder renders instead (preview builds only).
 import settings from '../content/settings.json';
 import Placeholder from './Placeholder.astro';
@@ -18,26 +19,32 @@ interface Props {
 }
 const { id, title, poster, aspect = '9/16', hook, job, placeholder, n = 1, class: cls } = Astro.props;
 const [w, h] = aspect === '9/16' ? [360, 640] : [640, 360];
+const annotation = `${String(n).padStart(2, '0')} · ${aspect.replace('/', ':')}`;
 ---
 {id ? (
-  <figure class:list={['plate', cls]} data-n={n}>
-    <div class="plate-annot" aria-hidden="true"><span class="datum"></span><span>{String(n).padStart(2, '0')} · {aspect.replace('/', ':')}</span></div>
+  <figure class:list={['plate', cls]}>
+    <div class="plate-annot t-label" aria-hidden="true"><span class="datum"></span><span>{annotation}</span></div>
     <div class="yt" data-yt={id} data-title={title} style={`aspect-ratio: ${w} / ${h}`}>
-      <button type="button" class="yt-button plate-frame" aria-label={`${settings.ui.playVideo}: ${title}`}>
+      <button type="button" class="plate-frame brackets" aria-label={`${settings.ui.playVideo}: ${title}`}>
         {poster && <img src={poster} alt="" width={w} height={h} loading="lazy" decoding="async" />}
-        <span class="yt-play" aria-hidden="true"><span class="disc"></span><span class="yt-play-label">Play</span></span>
+        <span class="yt-play" aria-hidden="true"><span class="disc"></span><span class="t-label">Play</span></span>
       </button>
       <noscript><a class="yt-fallback" href={`https://www.youtube.com/watch?v=${id}`}>{settings.ui.watchOnYouTube}: {title}</a></noscript>
     </div>
     {(hook || job) && (
       <figcaption class="lower-third">
         {hook && <span class="lt-title">{hook}</span>}
-        {job && <span class="lt-meta">{job}</span>}
+        {job && <span class="lt-meta t-label">{job}</span>}
       </figcaption>
     )}
   </figure>
 ) : (
-  placeholder && <div class:list={['plate', cls]}><Placeholder description={placeholder} aspect={`${w}/${h}`} /></div>
+  placeholder && (
+    <div class:list={['plate', cls]}>
+      <div class="plate-annot t-label" aria-hidden="true"><span class="datum"></span><span>{annotation}</span></div>
+      <Placeholder description={placeholder} aspect={`${w}/${h}`} />
+    </div>
+  )
 )}
 
 <script>

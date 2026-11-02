@@ -49,12 +49,12 @@ const article = {
     <header class="page-hero surface-ink">
       <div class="container">
         <Breadcrumbs items={crumbs} />
-        <p class="eyebrow">
+        <p class="eyebrow t-label">
           <time datetime={post.publishDate.toISOString().slice(0, 10)}>{fmt.format(post.publishDate)}</time>
           {post.draft && <span> · {index.draftLabel}</span>}
         </p>
-        <h1 class="page-title"><Text value={post.title} /></h1>
-        <p class="page-lead"><Text value={post.description} /></p>
+        <h1 class="page-title t-h1"><Text value={post.title} /></h1>
+        <p class="page-lead t-lead"><Text value={post.description} /></p>
       </div>
     </header>
     <div class="section surface-stone section-tight">

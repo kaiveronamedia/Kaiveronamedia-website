@@ -31,15 +31,15 @@ const home = defineCollection({
       who: z.string(),
       chips: z.array(z.string()),
       clip,
+      backgroundVideo: z
+        .object({ mp4: z.string(), webm: z.string().optional(), poster: z.string(), standIn: z.boolean().default(false) })
+        .optional(),
     }),
     testimonials: z.array(z.object({ quote: z.string(), attribution: z.string() })),
     problem: z.object({
       eyebrow: z.string(),
       title: z.string(),
-      haveLabel: z.string(),
-      have: z.array(z.string()),
-      needLabel: z.string(),
-      need: z.array(z.string()),
+      points: z.array(z.object({ icon: z.string(), title: z.string(), body: z.string() })).default([]),
       body: z.string(),
     }),
     process: z.object({
@@ -48,6 +48,7 @@ const home = defineCollection({
       stops: z.array(
         z.object({
           no: z.string(),
+          icon: z.string().optional(),
           stage: z.string(),
           title: z.string(),
           body: z.string(),
@@ -63,7 +64,7 @@ const home = defineCollection({
       includedLabel: z.string(),
       addonLabel: z.string(),
       items: z.array(
-        z.object({ title: z.string(), body: z.string(), type: z.enum(['included', 'addon']) }),
+        z.object({ title: z.string(), body: z.string(), icon: z.string().optional(), type: z.enum(['included', 'addon']) }),
       ),
     }),
     who: z.object({

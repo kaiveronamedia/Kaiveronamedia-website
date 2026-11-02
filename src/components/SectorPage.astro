@@ -4,112 +4,129 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from './Breadcrumbs.astro';
 import Button from './Button.astro';
 import FAQ from './FAQ.astro';
+import HeroPlate from './HeroPlate.astro';
+import HeroTitle from './HeroTitle.astro';
 import ProcessFlow from './ProcessFlow.astro';
 import SectionHeader from './SectionHeader.astro';
 import Text from './Text.astro';
-import YouTubeFacade from './YouTubeFacade.astro';
 import settings from '../content/settings.json';
 import { getHome } from '../lib/content';
 import { visible, visibleItems } from '../lib/placeholders';
 import { faqPage } from '../lib/schema';
+import { alternate } from '../lib/surfaces';
 
 interface Props { entry: CollectionEntry<'sectors'> }
 const s = Astro.props.entry.data;
 const home = await getHome();
 const crumbs = [{ label: settings.ui.home, href: '/' }, { label: s.name }];
 const faqItems = visibleItems(s.faq);
+
+// Sections that render in this build, in page order; surfaces alternate over them.
+const sections = [
+  visible(s.problem.body) && 'problem',
+  s.funnels && 'funnels',
+  s.compliance && 'compliance',
+  'how',
+  'who',
+  visible(s.proof) && 'proof',
+  faqItems.length > 0 && 'faq',
+].filter(Boolean) as string[];
+const surfaces = alternate(sections.length);
+const surface = (key: string) => surfaces[sections.indexOf(key)];
+const pad = (i: number) => String(i + 1).padStart(2, '0');
 ---
-<BaseLayout title={s.seoTitle} description={s.description} breadcrumbs={crumbs} schema={faqPage(s.faq)}>
+<BaseLayout title={s.seoTitle} description={s.description} breadcrumbs={crumbs} schema={faqPage(s.faq)} preloadItalic={Boolean(s.heroEmphasis)}>
   <section class="hero surface-ink" aria-labelledby="hero-title">
     <div class="container">
       <Breadcrumbs items={crumbs} />
       <div class="hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">{s.qualifier}</p>
-          <h1 id="hero-title" class="hero-title">{s.h1}</h1>
-          <p class="hero-lead">{s.sub}</p>
+          <p class="t-label">{s.qualifier}</p>
+          <HeroTitle id="hero-title" title={s.h1} emphasis={s.heroEmphasis} />
+          <p class="hero-lead t-lead">{s.sub}</p>
           <div class="hero-actions">
             <Button href={settings.cta.href}>{settings.cta.label}</Button>
             <p class="microcopy">{settings.cta.microcopy}</p>
           </div>
         </div>
         <div class="hero-plate">
-          <YouTubeFacade id={s.clip.youtubeId} title={s.clip.title} poster={s.clip.poster} placeholder={s.clip.placeholder} />
+          <HeroPlate clip={s.clip} />
         </div>
       </div>
     </div>
   </section>
 
-  {visible(s.problem.body) && (
-    <section class="section surface-stone" aria-labelledby="problem-title">
+  {sections.includes('problem') && (
+    <section class:list={['section', surface('problem')]} aria-labelledby="problem-title">
       <div class="container">
         <SectionHeader headingId="problem-title" title={s.problem.title} />
-        <p class="pull"><Text value={s.problem.body} /></p>
-        {s.roiLine && visible(s.roiLine) && <p class="section-lead"><Text value={s.roiLine} /></p>}
+        <p class="pull reveal"><Text value={s.problem.body} /></p>
+        {s.roiLine && visible(s.roiLine) && <p class="section-lead t-lead reveal"><Text value={s.roiLine} /></p>}
         {s.roiLink && <p class="section-link"><Button href={s.roiLink.href} variant="link">{s.roiLink.text}</Button></p>}
       </div>
     </section>
   )}
 
   {s.funnels && (
-    <section class="section surface-stone" aria-labelledby="funnels-title">
+    <section class:list={['section', surface('funnels')]} aria-labelledby="funnels-title">
       <div class="container">
-        <SectionHeader headingId="funnels-title" title={s.funnels.title} />
-        <div class="funnels">
+        <SectionHeader headingId="funnels-title" title={s.funnels.title} wide />
+        <div class="funnels reveal">
           {s.funnels.items.map((f) => (
             <div class="funnel">
-              <p class="eyebrow">{f.label}</p>
-              <h3 class="funnel-title">{f.title}</h3>
-              <p>{f.body}</p>
+              <h3 class="t-label">{f.label} · {f.title}</h3>
+              <p class="funnel-body t-lead">{f.body}</p>
             </div>
           ))}
         </div>
-        <p class="section-lead">{s.funnels.note}</p>
+        <p class="section-lead t-lead reveal">{s.funnels.note}</p>
       </div>
     </section>
   )}
 
   {s.compliance && (
-    <section class="section surface-stone" aria-labelledby="compliance-title">
+    <section class:list={['section', surface('compliance')]} aria-labelledby="compliance-title">
       <div class="container">
-        <div class="note-block">
-          <p class="eyebrow">{s.compliance.label}</p>
-          <h2 id="compliance-title" class="section-title">{s.compliance.title}</h2>
-          <p class="section-lead">{s.compliance.body}</p>
+        <div class="note-block reveal">
+          <p class="t-label">{s.compliance.label}</p>
+          <h2 id="compliance-title" class="section-title t-h2">{s.compliance.title}</h2>
+          <p class="section-lead t-lead">{s.compliance.body}</p>
         </div>
       </div>
     </section>
   )}
 
-  <section class="section surface-ink" aria-labelledby="how-title">
+  <section class:list={['section', surface('how')]} aria-labelledby="how-title">
     <div class="container">
       <SectionHeader headingId="how-title" title={s.howTitle} />
-      <ProcessFlow stops={home.process.stops} end={home.process.end} />
+      <div class="reveal"><ProcessFlow stops={home.process.stops} end={home.process.end} /></div>
       <p class="section-link"><Button href={home.process.link.href} variant="link">{home.process.link.text}</Button></p>
     </div>
   </section>
 
-  <section class="section surface-stone" aria-labelledby="who-title">
+  <section class:list={['section', surface('who')]} aria-labelledby="who-title">
     <div class="container">
       <SectionHeader headingId="who-title" title={s.whoTitle} />
-      <ul class="who-list" role="list">{s.who.map((w) => <li>{w}</li>)}</ul>
+      <ul class="who-list reveal" role="list">
+        {s.who.map((w, i) => <li><span class="t-label" aria-hidden="true">{pad(i)}</span><span>{w}</span></li>)}
+      </ul>
     </div>
   </section>
 
-  {visible(s.proof) && (
-    <section class="section surface-ink" aria-labelledby="proof-title">
+  {sections.includes('proof') && (
+    <section class:list={['section', surface('proof')]} aria-labelledby="proof-title">
       <div class="container">
         <SectionHeader headingId="proof-title" title={s.proofTitle} />
-        <p class="section-lead"><Text value={s.proof} /></p>
+        <p class="section-lead t-lead"><Text value={s.proof} /></p>
       </div>
     </section>
   )}
 
-  {faqItems.length > 0 && (
-    <section class="section surface-stone" aria-labelledby="faq-title">
+  {sections.includes('faq') && (
+    <section class:list={['section', surface('faq')]} aria-labelledby="faq-title">
       <div class="container">
         <SectionHeader headingId="faq-title" title={s.faqTitle} />
-        <FAQ items={s.faq} />
+        <div class="reveal"><FAQ items={s.faq} /></div>
       </div>
     </section>
   )}

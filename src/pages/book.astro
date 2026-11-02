@@ -4,15 +4,18 @@ import CalEmbed from '../components/CalEmbed.astro';
 import PageHero from '../components/PageHero.astro';
 import settings from '../content/settings.json';
 import { getPage } from '../lib/content';
+import { CAL_LINK } from '../lib/env';
 
 const { data: page } = await getPage('book');
 const crumbs = [{ label: settings.ui.home, href: '/' }, { label: page.h1 }];
 ---
 <BaseLayout title={page.seoTitle} description={page.description} breadcrumbs={crumbs} cta={false}>
-  <PageHero title={page.h1} lead={page.lead} breadcrumbs={crumbs} />
+  <PageHero title={page.h1} lead={page.lead} breadcrumbs={crumbs}>
+    <p class="cal-fallback"><a href={`https://cal.com/${CAL_LINK}`} target="_blank" rel="noopener">{page.fallbackText}</a></p>
+  </PageHero>
   <section class="section surface-stone section-tight">
     <div class="container">
-      <CalEmbed fallbackText={page.fallbackText!} />
+      <CalEmbed />
     </div>
   </section>
 </BaseLayout>

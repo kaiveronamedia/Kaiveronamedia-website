@@ -1,0 +1,38 @@
+---
+// Muted, looping background video behind the hero (Kai's decision, Nov 2026).
+// It starts from JavaScript, never from the HTML, so it stays still when the
+// visitor prefers reduced motion or has Save-Data on, and without JS the poster
+// shows instead. A visible pause button meets WCAG 2.2.2 (Pause, Stop, Hide).
+import settings from '../content/settings.json';
+
+interface Props { mp4: string; webm?: string; poster: string; standIn?: boolean }
+const { mp4, webm, poster } = Astro.props;
+---
+<div class="hero-bg" aria-hidden="true">
+  <video class="hero-bg-video" muted loop playsinline preload="none" poster={poster} data-bg-video>
+    {webm && <source src={webm} type="video/webm" />}
+    <source src={mp4} type="video/mp4" />
+  </video>
+</div>
+<button type="button" class="hero-bg-toggle t-label" data-bg-toggle hidden
+  data-pause={settings.ui.pauseVideo} data-play={settings.ui.playVideoBg}>{settings.ui.pauseVideo}</button>
+
+<script>
+  const video = document.querySelector<HTMLVideoElement>('[data-bg-video]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-bg-toggle]');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+  // Start once the page has loaded and gone idle, so the footage never
+  // competes with the headline, fonts or first paint.
+  const start = () => video!.play().then(() => { toggle!.hidden = false; video!.classList.add('is-playing'); }).catch(() => {});
+  const whenIdle = () => ('requestIdleCallback' in window ? requestIdleCallback(() => setTimeout(start, 600)) : setTimeout(start, 1200));
+  if (video && toggle && !still) {
+    if (document.readyState === 'complete') whenIdle(); else addEventListener('load', whenIdle, { once: true });
+    toggle.addEventListener('click', () => {
+      const playing = !video.paused;
+      if (playing) video.pause(); else video.play();
+      toggle.textContent = (playing ? toggle.dataset.play : toggle.dataset.pause) ?? '';
+      toggle.setAttribute('aria-pressed', String(playing));
+    });
+  }
+</script>

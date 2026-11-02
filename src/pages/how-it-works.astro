@@ -20,34 +20,34 @@ const parts = page.parts!;
   <section class="section surface-stone" aria-labelledby="step0-title">
     <div class="container">
       <SectionHeader eyebrow={step0.label} headingId="step0-title" title={step0.title} />
-      {step0.intro && <p class="section-lead">{step0.intro}</p>}
-      <ol class="step-list">{step0.items.map((item) => <li>{item}</li>)}</ol>
-      <p class="section-lead">{step0.close}</p>
+      {step0.intro && <p class="section-lead t-lead reveal">{step0.intro}</p>}
+      <ol class="step-list reveal">{step0.items.map((item) => <li>{item}</li>)}</ol>
+      <p class="section-lead t-lead reveal">{step0.close}</p>
     </div>
   </section>
 
   <section class="section surface-ink" aria-labelledby="parts-title">
     <div class="container">
       <SectionHeader headingId="parts-title" title={parts.title} />
-      <ol class="schedule" role="list">
+      <ol class="schedule reveal" role="list">
         {parts.items.map((p) => (
           <li class="schedule-row">
             <span class="schedule-no" aria-hidden="true">{p.no}</span>
             <div class="schedule-text">
-              <h3 class="schedule-title">{p.title}</h3>
+              <h3 class="schedule-title t-h3">{p.title}</h3>
               <p>{p.body}</p>
             </div>
           </li>
         ))}
       </ol>
-      <ul class="chips" role="list">{(page.facts ?? []).map((f) => <li class="chip">{f}</li>)}</ul>
+      <ul class="chips" role="list">{(page.facts ?? []).map((f) => <li class="chip t-label">{f}</li>)}</ul>
     </div>
   </section>
 
   <section class="section surface-stone" aria-labelledby="faq-title">
     <div class="container">
       <SectionHeader headingId="faq-title" title={page.faqTitle} />
-      <FAQ items={faq} />
+      <div class="reveal"><FAQ items={faq} /></div>
     </div>
   </section>
 </BaseLayout>

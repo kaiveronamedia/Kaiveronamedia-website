@@ -2,14 +2,10 @@
 // Cal.com inline embed. The only page that loads it is /book (AGENTS.md §6).
 import { CAL_LINK } from '../lib/env';
 
-interface Props { fallbackText: string }
-const { fallbackText } = Astro.props;
-const bookingUrl = `https://cal.com/${CAL_LINK}`;
 ---
 <div class="cal-frame">
   <div id="cal-inline" class="cal-inline" data-cal-link={CAL_LINK}></div>
 </div>
-<p class="cal-fallback"><a href={bookingUrl} target="_blank" rel="noopener">{fallbackText}</a></p>
 
 <script is:inline>
   (function (C, A, L) {

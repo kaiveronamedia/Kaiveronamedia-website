@@ -26,19 +26,19 @@ const { labels } = Astro.props;
     <input type="hidden" name="redirect" value={`${DEPLOY_URL}/thanks`} />
     <input type="checkbox" name="botcheck" style="display: none" />
     <div class="field">
-      <label for="f-name">{labels.nameLabel}</label>
+      <label class="t-label" for="f-name">{labels.nameLabel}</label>
       <input id="f-name" name="name" type="text" autocomplete="name" required />
     </div>
     <div class="field">
-      <label for="f-email">{labels.emailLabel}</label>
+      <label class="t-label" for="f-email">{labels.emailLabel}</label>
       <input id="f-email" name="email" type="email" autocomplete="email" required />
     </div>
     <div class="field">
-      <label for="f-firm">{labels.firmLabel}</label>
+      <label class="t-label" for="f-firm">{labels.firmLabel}</label>
       <input id="f-firm" name="firm" type="text" autocomplete="organization" />
     </div>
     <div class="field">
-      <label for="f-message">{labels.messageLabel}</label>
+      <label class="t-label" for="f-message">{labels.messageLabel}</label>
       <textarea id="f-message" name="message" rows="6" required></textarea>
     </div>
     <button type="submit" class="btn btn-primary"><span class="btn-label">{labels.submitLabel}</span><span class="btn-arrow" aria-hidden="true">→</span></button>

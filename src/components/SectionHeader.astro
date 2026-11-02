@@ -1,20 +1,23 @@
 ---
-// Section label row (hairline, number, eyebrow) and the H2.
-// `index`/`total` are computed by the page from the sections it actually renders.
+// Section label row (hairline, mono number, eyebrow, "/ total") and the H2.
+// `index`/`total` are computed by the page from the sections it actually renders,
+// so a hidden section never leaves a gap in the numbering.
 interface Props {
   eyebrow?: string;
   headingId: string;
   index?: number;
   total?: number;
   title?: string;
+  /** Let the H2 run to 10 columns instead of 9 */
+  wide?: boolean;
 }
-const { eyebrow, headingId, index, total, title } = Astro.props;
+const { eyebrow, headingId, index, total, title, wide = false } = Astro.props;
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
-<div class="section-head">
-  <p class="eyebrow">
+<div class="section-head reveal">
+  <p class="t-label trim-cap">
     {index !== undefined && <span aria-hidden="true">{pad(index)}{eyebrow ? ' · ' : ''}</span>}{eyebrow}
   </p>
-  {total !== undefined && <p class="section-total" aria-hidden="true">/ {pad(total)}</p>}
+  {total !== undefined && <p class="t-label trim-cap section-total" aria-hidden="true">/ {pad(total)}</p>}
 </div>
-{title && <h2 id={headingId} class="section-title">{title}</h2>}
+{title && <h2 id={headingId} class:list={['section-title t-h2 reveal reveal-2', { 'is-wide': wide }]}>{title}</h2>}

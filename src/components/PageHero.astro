@@ -14,9 +14,9 @@ const { title, label, lead, breadcrumbs, display = false } = Astro.props;
 <section class="page-hero surface-ink">
   <div class="container">
     {breadcrumbs && breadcrumbs.length > 1 && <Breadcrumbs items={breadcrumbs} />}
-    {label && <p class="eyebrow">{label}</p>}
-    <h1 class:list={['page-title', { 'is-display': display }]}>{title}</h1>
-    {lead && <p class="page-lead"><Text value={lead} /></p>}
+    {label && <p class="eyebrow t-label">{label}</p>}
+    <h1 class:list={['page-title', display ? 't-display' : 't-h1', { 'has-label': label }]}><Text value={title} /></h1>
+    {lead && <p class="page-lead t-lead"><Text value={lead} /></p>}
     <slot />
   </div>
 </section>

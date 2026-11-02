@@ -14,8 +14,8 @@ const { title = settings.ctaBand.title, body = settings.ctaBand.body, showRoi = 
 ---
 <section class="cta-band surface-ink" aria-labelledby="cta-title">
   <div class="container">
-    <h2 id="cta-title" class="cta-title">{title}</h2>
-    <p class="cta-body">{body}</p>
+    <h2 id="cta-title" class="cta-title t-display">{title}</h2>
+    <p class="cta-body t-lead">{body}</p>
     <div class="cta-actions">
       <Button href={settings.cta.href}>{settings.cta.label}</Button>
       <p class="microcopy">{settings.cta.microcopy}</p>
@@ -23,6 +23,6 @@ const { title = settings.ctaBand.title, body = settings.ctaBand.body, showRoi = 
     {showRoi && (
       <p class="cta-roi"><Button href={settings.ctaBand.roiLinkHref} variant="link">{settings.ctaBand.roiLinkText}</Button></p>
     )}
-    {signOff && <p class="cta-signoff" aria-hidden="true">{settings.ctaBand.signOff}</p>}
+    {signOff && <p class="cta-signoff t-label">{settings.ctaBand.signOff}</p>}
   </div>
 </section>

@@ -1,0 +1,59 @@
+---
+// The "funnel drawing" plate (DESIGN_BRIEF.md §5.6): a hairline diagram of the
+// Video Lead Engine, shown in production when no cleared hero clip exists.
+// Every label comes from content, so nothing here is new copy.
+import settings from '../content/settings.json';
+import { getHome, getPage } from '../lib/content';
+
+interface Props { n?: number }
+const { n = 1 } = Astro.props;
+
+const home = await getHome();
+const { data: how } = await getPage('how-it-works');
+const facts = how.facts ?? [];
+const findFact = (needle: RegExp, fallback: string) => facts.find((f) => needle.test(f)) ?? fallback;
+const [attention, trust, conversion] = home.process.stops;
+const leadForm = home.included.items.find((i) => /lead form/i.test(i.title))?.title ?? conversion.title;
+const stations = [
+  { no: attention.no, stage: attention.stage, note: findFact(/clips/i, attention.title) },
+  { no: trust.no, stage: trust.stage, note: findFact(/anchor video/i, trust.title) },
+  { no: conversion.no, stage: conversion.stage, note: leadForm },
+  { no: '→', stage: home.process.end.label, note: home.process.end.body.replace(/\.$/, ''), end: true },
+];
+// "How the Video Lead Engine works" -> "Video Lead Engine"
+const engine = how.h1.replace(/^How the\s+/i, '').replace(/\s+works$/i, '');
+const titleBlock = [settings.siteName, engine].filter(Boolean).join(' · ').toUpperCase();
+const label = stations.map((s) => `${s.stage}: ${s.note}`).join('. ');
+
+// Geometry in a 360 × 640 drawing (9:16).
+const x0 = 56;
+const top = 92;
+const step = 124;
+const ys = stations.map((_, i) => top + i * step);
+const annotation = `${String(n).padStart(2, '0')} · 9:16`;
+---
+<div class="plate">
+  <div class="plate-annot t-label" aria-hidden="true"><span class="datum"></span><span>{annotation}</span></div>
+  <div class="funnel-plate">
+    <svg viewBox="0 0 360 640" role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg">
+      <!-- sheet border and title block -->
+      <rect class="fp-rule" x="16.5" y="16.5" width="327" height="607" />
+      <line class="fp-rule" x1="16.5" y1="572.5" x2="343.5" y2="572.5" />
+      <text class="fp-title" x="32" y="602">{titleBlock}</text>
+      <!-- the dimension line through every station, with arrowheads -->
+      <line class="fp-line" x1={x0 - 20.5} y1={ys[0] - 20} x2={x0 - 20.5} y2={ys[3] + 4} />
+      {ys.slice(1).map((y) => (
+        <polyline class="fp-line" points={`${x0 - 25},${y - 14} ${x0 - 20.5},${y - 8} ${x0 - 16},${y - 14}`} />
+      ))}
+      {stations.map((s, i) => (
+        <g>
+          <rect class="fp-datum" x={x0 - 24.5} y={ys[i] - 4} width="8" height="8" />
+          <line class="fp-rule" x1={x0 - 12} y1={ys[i] + 0.5} x2="328" y2={ys[i] + 0.5} />
+          <text class="fp-no" x={x0} y={ys[i] - 12}>{s.no}</text>
+          <text class:list={['fp-stage', { 'is-end': s.end }]} x={x0} y={ys[i] + 36}>{s.stage}</text>
+          <text class="fp-note" x={x0} y={ys[i] + 60}>{s.note.toUpperCase()}</text>
+        </g>
+      ))}
+    </svg>
+  </div>
+</div>
