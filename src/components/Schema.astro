@@ -1,0 +1,47 @@
+---
+import settings from '../content/settings.json';
+import { SITE_URL } from '../lib/env';
+import type { Crumb } from './Breadcrumbs.astro';
+
+interface Props {
+  breadcrumbs?: Crumb[];
+  extra?: Record<string, unknown>[];
+}
+const { breadcrumbs = [], extra = [] } = Astro.props;
+
+const org: Record<string, unknown> = {
+  '@type': 'ProfessionalService',
+  '@id': `${SITE_URL}/#org`,
+  name: settings.siteName,
+  alternateName: ['Kai Verona Media', 'Kai Verona'],
+  url: `${SITE_URL}/`,
+  email: settings.email,
+  slogan: settings.strapline,
+  description: settings.description,
+  founder: { '@type': 'Person', '@id': `${SITE_URL}/#kai`, name: settings.founder },
+  address: { '@type': 'PostalAddress', addressLocality: settings.locality, addressCountry: 'GB' },
+  areaServed: settings.areaServed.map((name) => ({ '@type': 'City', name })),
+  sameAs: settings.socials.map((s) => s.href),
+};
+// The logo stays out until Kai supplies one (info file §10).
+if (settings.logoUrl) org.logo = new URL(settings.logoUrl, SITE_URL).href;
+
+const graph: Record<string, unknown>[] = [
+  org,
+  { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, url: `${SITE_URL}/`, name: settings.siteName, inLanguage: 'en-GB', publisher: { '@id': `${SITE_URL}/#org` } },
+];
+if (breadcrumbs.length > 1) {
+  graph.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.label,
+      ...(c.href ? { item: new URL(c.href, SITE_URL).href } : {}),
+    })),
+  });
+}
+graph.push(...extra);
+const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
+---
+<script type="application/ld+json" set:html={json} />

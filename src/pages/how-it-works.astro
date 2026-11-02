@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import settings from '../content/settings.json';
+import { getHome, getPage } from '../lib/content';
+import { faqPage } from '../lib/schema';
+
+const { data: page } = await getPage('how-it-works');
+const home = await getHome();
+const faq = [...home.faq, ...(page.faqExtra ?? [])];
+const crumbs = [{ label: settings.ui.home, href: '/' }, { label: settings.nav.find((n) => n.href === '/how-it-works')?.label ?? page.h1 }];
+const step0 = page.step0!;
+const parts = page.parts!;
+---
+<BaseLayout title={page.seoTitle} description={page.description} breadcrumbs={crumbs} schema={faqPage(faq)}>
+  <PageHero title={page.h1} lead={page.lead} breadcrumbs={crumbs} />
+
+  <section class="section surface-stone" aria-labelledby="step0-title">
+    <div class="container">
+      <SectionHeader eyebrow={step0.label} headingId="step0-title" title={step0.title} />
+      {step0.intro && <p class="section-lead">{step0.intro}</p>}
+      <ol class="step-list">{step0.items.map((item) => <li>{item}</li>)}</ol>
+      <p class="section-lead">{step0.close}</p>
+    </div>
+  </section>
+
+  <section class="section surface-ink" aria-labelledby="parts-title">
+    <div class="container">
+      <SectionHeader headingId="parts-title" title={parts.title} />
+      <ol class="schedule" role="list">
+        {parts.items.map((p) => (
+          <li class="schedule-row">
+            <span class="schedule-no" aria-hidden="true">{p.no}</span>
+            <div class="schedule-text">
+              <h3 class="schedule-title">{p.title}</h3>
+              <p>{p.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <ul class="chips" role="list">{(page.facts ?? []).map((f) => <li class="chip">{f}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section surface-stone" aria-labelledby="faq-title">
+    <div class="container">
+      <SectionHeader headingId="faq-title" title={page.faqTitle} />
+      <FAQ items={faq} />
+    </div>
+  </section>
+</BaseLayout>

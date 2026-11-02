@@ -1,0 +1,56 @@
+---
+import settings from '../content/settings.json';
+import Button from './Button.astro';
+
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => href === path;
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="wordmark">{settings.siteName}</a>
+    <nav class="nav-desktop" aria-label="Main">
+      <ul role="list">
+        {settings.nav.map((item) =>
+          item.children ? (
+            <li>
+              <details class="nav-dropdown">
+                <summary class:list={['nav-link', { 'is-current': item.children.some((c) => isCurrent(c.href)) }]}>{item.label}</summary>
+                <ul role="list" class="dropdown-panel">
+                  {item.children.map((c) => (
+                    <li><a href={c.href} aria-current={isCurrent(c.href) ? 'page' : undefined}>{c.label}</a></li>
+                  ))}
+                </ul>
+              </details>
+            </li>
+          ) : (
+            <li><a class="nav-link" href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+          ),
+        )}
+      </ul>
+    </nav>
+    <Button href={settings.cta.href} variant="pill" class="header-cta">{settings.cta.label}</Button>
+    <details class="menu-sheet">
+      <summary class="menu-toggle">{settings.ui.menu}</summary>
+      <nav class="sheet" aria-label="Main">
+        <ul role="list">
+          {settings.nav.flatMap((item) => (item.children ? item.children : [item])).map((item) => (
+            <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+          ))}
+        </ul>
+        <Button href={settings.cta.href} variant="pill">{settings.cta.label}</Button>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<script>
+  // Close the "Who it's for" dropdown on outside click or Escape.
+  const dropdowns = document.querySelectorAll<HTMLDetailsElement>('.nav-dropdown');
+  document.addEventListener('click', (e) => {
+    dropdowns.forEach((d) => { if (d.open && !d.contains(e.target as Node)) d.open = false; });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    dropdowns.forEach((d) => { if (d.open) { d.open = false; d.querySelector('summary')?.focus(); } });
+  });
+</script>

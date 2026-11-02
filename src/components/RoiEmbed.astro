@@ -1,0 +1,32 @@
+---
+// Embeds the existing ROI calculator (separate Pages project kvm-roi-calculator).
+// It reports its height with postMessage({ kvmRoiHeight }); only that origin is trusted.
+import { ROI_CALCULATOR_URL } from '../lib/env';
+
+interface Props { title: string; fallbackText: string }
+const { title, fallbackText } = Astro.props;
+const origin = new URL(ROI_CALCULATOR_URL).origin;
+---
+<div class="roi-embed">
+  <iframe
+    id="roi-frame"
+    src={ROI_CALCULATOR_URL}
+    title={title}
+    loading="lazy"
+    style="width:100%;border:0;min-height:900px"
+    data-origin={origin}
+  ></iframe>
+  <p class="roi-fallback"><a href={ROI_CALCULATOR_URL} target="_blank" rel="noopener">{fallbackText}</a></p>
+</div>
+
+<script>
+  const frame = document.getElementById('roi-frame') as HTMLIFrameElement | null;
+  if (frame) {
+    const origin = frame.dataset.origin;
+    window.addEventListener('message', (event) => {
+      if (event.origin !== origin) return;
+      const height = Number(event.data?.kvmRoiHeight);
+      if (Number.isFinite(height) && height > 0) frame.style.height = `${Math.ceil(height)}px`;
+    });
+  }
+</script>

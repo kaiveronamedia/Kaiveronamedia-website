@@ -1,0 +1,23 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Placeholder from '../components/Placeholder.astro';
+import settings from '../content/settings.json';
+import { getPage } from '../lib/content';
+
+const entry = await getPage('privacy-policy');
+const page = entry.data;
+const { Content } = await render(entry);
+const crumbs = [{ label: settings.ui.home, href: '/' }, { label: page.h1 }];
+---
+<BaseLayout title={page.seoTitle} description={page.description} breadcrumbs={crumbs}>
+  <PageHero title={page.h1} breadcrumbs={crumbs} />
+  <section class="section surface-stone section-tight">
+    <div class="container">
+      {page.reviewNote && <Placeholder description={page.reviewNote} />}
+      {page.portedText && <Placeholder description={page.portedText} />}
+      <div class="prose"><Content /></div>
+    </div>
+  </section>
+</BaseLayout>

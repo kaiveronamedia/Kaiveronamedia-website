@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Placeholder from '../components/Placeholder.astro';
+import settings from '../content/settings.json';
+import { getPage } from '../lib/content';
+import { SHOW_PLACEHOLDERS } from '../lib/env';
+
+// No figures until Kai confirms them (info file §6.6). The table is a
+// placeholder block: visible in preview, omitted in production.
+const { data: page } = await getPage('pricing');
+const crumbs = [{ label: settings.ui.home, href: '/' }, { label: page.h1 }];
+---
+<BaseLayout title={page.seoTitle} description={page.description} breadcrumbs={crumbs}>
+  <!-- The CTA band follows directly, so the hero carries no second primary button. -->
+  <PageHero title={page.h1} lead={page.lead} breadcrumbs={crumbs} />
+  {page.table && SHOW_PLACEHOLDERS && (
+    <section class="section surface-stone section-tight">
+      <div class="container"><Placeholder description={page.table} /></div>
+    </section>
+  )}
+</BaseLayout>

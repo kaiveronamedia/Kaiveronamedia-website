@@ -1,0 +1,54 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import YouTubeFacade from '../../components/YouTubeFacade.astro';
+import settings from '../../content/settings.json';
+import { getClearedWork, getPage } from '../../lib/content';
+import { SITE_URL } from '../../lib/env';
+
+// Only cleared clips get a watch page (info file §6.8).
+export async function getStaticPaths() {
+  const cleared = await getClearedWork();
+  return cleared.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const clip = entry.data;
+const { data: workPage } = await getPage('work');
+const { Content } = await render(entry);
+const transcript = (entry.body ?? '').replace(/[#*_>`]/g, '').replace(/\s+/g, ' ').trim();
+const crumbs = [
+  { label: settings.ui.home, href: '/' },
+  { label: workPage.label ?? workPage.h1, href: '/work' },
+  { label: clip.title },
+];
+const video = {
+  '@type': 'VideoObject',
+  name: clip.title,
+  description: clip.summary,
+  thumbnailUrl: clip.poster ? [new URL(clip.poster, SITE_URL).href] : [],
+  uploadDate: clip.uploadDate,
+  duration: clip.duration,
+  embedUrl: `https://www.youtube-nocookie.com/embed/${clip.youtubeId}`,
+  contentUrl: `https://www.youtube.com/watch?v=${clip.youtubeId}`,
+  transcript,
+  publisher: { '@id': `${SITE_URL}/#org` },
+};
+---
+<BaseLayout title={`${clip.title} | ${settings.siteName}`} description={clip.summary} breadcrumbs={crumbs} schema={[video]}>
+  <PageHero title={clip.title} breadcrumbs={crumbs} />
+  <section class="section surface-ink section-tight">
+    <div class="container watch">
+      <YouTubeFacade id={clip.youtubeId} title={clip.title} poster={clip.poster} aspect={clip.aspect} hook={clip.hook} job={clip.job} />
+      <p class="section-lead">{clip.summary}</p>
+      {clip.job && (
+        <>
+          <h2 class="section-title">{workPage.whatItDidTitle}</h2>
+          <p>{clip.job}</p>
+        </>
+      )}
+      <h2 class="eyebrow">{workPage.transcriptTitle}</h2>
+      <div class="prose transcript"><Content /></div>
+    </div>
+  </section>
+</BaseLayout>

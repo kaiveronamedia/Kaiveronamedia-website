@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+import settings from '../content/settings.json';
+import SEO from '../components/SEO.astro';
+import Schema from '../components/Schema.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CtaBand from '../components/CtaBand.astro';
+import type { Crumb } from '../components/Breadcrumbs.astro';
+import { CF_BEACON_TOKEN, SHOW_PLACEHOLDERS } from '../lib/env';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  breadcrumbs?: Crumb[];
+  noindex?: boolean;
+  schema?: Record<string, unknown>[];
+  /** Render the standard closing CTA band before the footer */
+  cta?: boolean;
+  ctaRoi?: boolean;
+}
+const {
+  title,
+  description,
+  ogImage,
+  ogType,
+  breadcrumbs = [],
+  noindex = false,
+  schema = [],
+  cta = true,
+  ctaRoi = true,
+} = Astro.props;
+// Preview builds are never indexed.
+// The logo/favicon is still to come from Kai; an empty icon avoids a 404 request until then.
+const robotsNoindex = noindex || SHOW_PLACEHOLDERS;
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEO title={title} description={description} path={Astro.url.pathname} ogImage={ogImage} ogType={ogType} noindex={robotsNoindex} />
+    <link rel="icon" href="data:," />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#0B1322" />
+    <Schema breadcrumbs={breadcrumbs} extra={schema} />
+    {CF_BEACON_TOKEN && (
+      <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: CF_BEACON_TOKEN })}></script>
+    )}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{settings.ui.skipLink}</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    {cta && <CtaBand showRoi={ctaRoi} />}
+    <Footer />
+  </body>
+</html>

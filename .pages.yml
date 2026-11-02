@@ -1,0 +1,505 @@
+# Pages CMS (https://pagescms.org) configuration.
+# Every visible word on the site lives in these files. Placeholders use the
+# exact token [[PLACEHOLDER: what's needed]]: preview builds show them as dashed
+# amber boxes, production builds hide the block they sit in.
+
+media:
+  - name: insights
+    label: Insight images
+    input: src/assets/insights
+    output: ../../assets/insights
+    extensions: [jpg, jpeg, png, webp, avif]
+  - name: media
+    label: Video posters and headshot
+    input: public/media
+    output: /media
+    extensions: [jpg, jpeg, png, webp, avif]
+
+components:
+  faqItem:
+    label: Question
+    type: object
+    fields:
+      - { name: question, label: Question, type: string, required: true }
+      - { name: answer, label: Answer, type: text, required: true }
+  link:
+    label: Link
+    type: object
+    fields:
+      - { name: text, label: Link text, type: string }
+      - { name: href, label: Link target, type: string }
+  clip:
+    label: Video clip
+    type: object
+    fields:
+      - { name: youtubeId, label: YouTube ID (cleared clips only), type: string }
+      - { name: poster, label: Poster (1080×1920, no text burned in), type: image, options: { media: media } }
+      - { name: title, label: Video title (used in "Play video" label), type: string }
+      - { name: placeholder, label: Placeholder shown in preview while there's no clip, type: string }
+
+content:
+  # ------------------------------------------------------------------ Insights
+  - name: insights
+    label: Insights (blog)
+    type: collection
+    path: src/content/insights
+    filename: "{fields.slug}.md"
+    view:
+      fields: [title, publishDate, draft]
+      primary: title
+      sort: [publishDate]
+      default: { sort: publishDate, order: desc }
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: slug, label: URL slug (e.g. anchor-video-for-architects), type: string, required: true, pattern: { regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$", message: "Lower case letters, numbers and hyphens only" } }
+      - { name: description, label: Description (120–155 characters, for search and link previews), type: text, required: true }
+      - { name: publishDate, label: Publish date, type: date, required: true }
+      - name: sector
+        label: Sector (optional)
+        type: select
+        options:
+          values:
+            - { value: "", label: "None" }
+            - { value: architects, label: Architects }
+            - { value: construction, label: Construction }
+            - { value: mortgage-and-finance, label: Mortgage & finance }
+      - { name: heroImage, label: Hero image (optional), type: image, options: { media: insights } }
+      - { name: heroImageAlt, label: Hero image description (alt text), type: string }
+      - { name: draft, label: Draft (only visible in preview builds), type: boolean, default: true }
+      - { name: body, label: Body, type: rich-text }
+
+  # ---------------------------------------------------------------- Work clips
+  - name: work
+    label: Work (video clips)
+    type: collection
+    path: src/content/work
+    filename: "{fields.slug}.md"
+    view:
+      fields: [title, cleared, featured]
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: slug, label: URL slug, type: string, required: true }
+      - { name: cleared, label: Cleared by the customer for publication, type: boolean, default: false }
+      - { name: featured, label: Show on the homepage, type: boolean, default: false }
+      - { name: status, label: Status, type: select, options: { values: [live, placeholder] } }
+      - { name: youtubeId, label: YouTube ID, type: string }
+      - { name: aspect, label: Aspect ratio, type: select, options: { values: ["9/16", "16/9"] } }
+      - { name: poster, label: Poster image, type: image, options: { media: media } }
+      - { name: sector, label: Sector, type: string }
+      - { name: hook, label: Hook line, type: string }
+      - { name: job, label: "The job it did (e.g. Attention · LinkedIn)", type: string }
+      - { name: summary, label: Summary, type: text }
+      - { name: uploadDate, label: "Upload date (ISO with timezone, e.g. 2026-11-01T09:00:00+00:00)", type: string }
+      - { name: duration, label: "Duration (ISO 8601, e.g. PT1M12S)", type: string }
+      - { name: body, label: Transcript, type: rich-text }
+
+  # ------------------------------------------------------------ Sector pages
+  - name: sectors
+    label: Sector pages
+    type: collection
+    path: src/content/sectors
+    view:
+      fields: [name, h1]
+    fields:
+      - { name: slug, label: URL slug, type: string, required: true }
+      - { name: order, label: Order, type: number }
+      - { name: name, label: Sector name, type: string }
+      - { name: seoTitle, label: SEO title (≤ 60 characters), type: string }
+      - { name: description, label: SEO description (120–155 characters), type: text }
+      - { name: qualifier, label: Qualifier line, type: string }
+      - { name: h1, label: Heading (H1), type: string }
+      - { name: sub, label: Subheading, type: text }
+      - { name: clip, component: clip }
+      - name: problem
+        label: Problem
+        type: object
+        fields:
+          - { name: title, label: Heading, type: string }
+          - { name: body, label: Text, type: text }
+      - { name: roiLine, label: ROI line (needs approval), type: text }
+      - { name: roiLink, component: link, label: ROI calculator link }
+      - name: funnels
+        label: Two funnels (construction only)
+        type: object
+        fields:
+          - { name: title, label: Heading, type: string }
+          - name: items
+            label: Funnels
+            type: object
+            list: true
+            fields:
+              - { name: label, label: Label, type: string }
+              - { name: title, label: Title, type: string }
+              - { name: body, label: Text, type: text }
+          - { name: note, label: Note, type: text }
+      - name: compliance
+        label: Compliance note (mortgage only)
+        type: object
+        fields:
+          - { name: label, label: Label, type: string }
+          - { name: title, label: Heading, type: string }
+          - { name: body, label: Text, type: text }
+      - { name: howTitle, label: "\"How it works\" heading", type: string }
+      - { name: whoTitle, label: "\"Who it's for\" heading", type: string }
+      - { name: who, label: Who exactly, type: string, list: true }
+      - { name: proofTitle, label: Proof heading, type: string }
+      - { name: proof, label: Proof, type: text }
+      - { name: faqTitle, label: FAQ heading, type: string }
+      - { name: faq, label: FAQ, component: faqItem, list: true }
+
+  # ----------------------------------------------------------------- Homepage
+  - name: home
+    label: Homepage
+    type: file
+    path: src/content/home/index.md
+    fields:
+      - { name: seoTitle, label: SEO title, type: string }
+      - { name: description, label: SEO description, type: text }
+      - name: hero
+        label: Hero
+        type: object
+        fields:
+          - { name: eyebrow, label: Eyebrow, type: string }
+          - { name: title, label: Heading (H1), type: string }
+          - { name: sub, label: Subheading, type: text }
+          - { name: who, label: Who-line, type: string }
+          - { name: chips, label: Fact chips (allowed facts only), type: string, list: true }
+          - { name: clip, component: clip }
+      - name: testimonials
+        label: Testimonials (verbatim, never edited)
+        type: object
+        list: true
+        fields:
+          - { name: quote, label: Quote, type: text }
+          - { name: attribution, label: Attribution, type: string }
+      - name: problem
+        label: The problem
+        type: object
+        fields:
+          - { name: eyebrow, label: Eyebrow, type: string }
+          - { name: title, label: Heading, type: string }
+          - { name: haveLabel, label: Left label, type: string }
+          - { name: have, label: What you have, type: string, list: true }
+          - { name: needLabel, label: Right label, type: string }
+          - { name: need, label: What you need, type: string, list: true }
+          - { name: body, label: Text, type: text }
+      - name: process
+        label: How it works
+        type: object
+        fields:
+          - { name: eyebrow, label: Eyebrow, type: string }
+          - { name: title, label: Heading, type: string }
+          - name: stops
+            label: Stops
+            type: object
+            list: true
+            fields:
+              - { name: no, label: Number, type: string }
+              - { name: stage, label: Stage, type: string }
+              - { name: title, label: Title, type: string }
+              - { name: body, label: Text, type: text }
+              - { name: reveal, label: Reveal items, type: string, list: true }
+          - name: end
+            label: End stop
+            type: object
+            fields:
+              - { name: label, label: Label, type: string }
+              - { name: body, label: Text, type: string }
+          - { name: link, component: link }
+      - name: included
+        label: What's included
+        type: object
+        fields:
+          - { name: eyebrow, label: Eyebrow, type: string }
+          - { name: title, label: Heading, type: string }
+          - { name: includedLabel, label: Included tag, type: string }
+          - { name: addonLabel, label: Add-on tag, type: string }
+          - name: items
+            label: Items (no prices)
+            type: object
+            list: true
+            fields:
+              - { name: title, label: Title, type: string }
+              - { name: body, label: Text, type: string }
+              - { name: type, label: Type, type: select, options: { values: [included, addon] } }
+      - name: who
+        label: Who it's for
+        type: object
+        fields:
+          - { name: eyebrow, label: Eyebrow, type: string }
+          - { name: title, label: Heading, type: string }
+          - name: sectors
+            label: Sectors
+            type: object
+            list: true
+            fields:
+              - { name: name, label: Name, type: string }
+              - { name: pitch, label: One-line pitch, type: string }
+              - { name: href, label: Link, type: string }
+      - name: work
+        label: Work
+        type: object
+        fields:
+          - { name: eyebrow, label: Eyebrow, type: string }
+          - { name: title, label: Heading, type: string }
+          - { name: emptyLine, label: Line shown while no work is cleared, type: string }
+          - { name: emptyLink, component: link }
+          - { name: caseStudy, label: Case study (only with signed-off numbers), type: text }
+          - { name: howWeBuiltIt, label: "\"How we built it\" card", type: text }
+      - name: retainers
+        label: Retainers (hidden until status is live)
+        type: object
+        fields:
+          - { name: status, label: Status, type: select, options: { values: [live, placeholder] } }
+          - { name: eyebrow, label: Eyebrow, type: string }
+          - { name: title, label: Heading, type: string }
+          - name: plans
+            label: Plans (no prices)
+            type: object
+            list: true
+            fields:
+              - { name: name, label: Plan name, type: string }
+              - { name: includes, label: What's included, type: text }
+          - { name: link, component: link }
+      - { name: faq, label: FAQ, component: faqItem, list: true }
+
+  # -------------------------------------------------------------- Inner pages
+  - name: how-it-works
+    label: How it works
+    type: file
+    path: src/content/pages/how-it-works.md
+    fields:
+      - { name: seoTitle, label: SEO title, type: string }
+      - { name: description, label: SEO description, type: text }
+      - { name: h1, label: Heading (H1), type: string }
+      - { name: lead, label: Lead, type: text }
+      - name: step0
+        label: Step 0
+        type: object
+        fields:
+          - { name: title, label: Heading, type: string }
+          - { name: label, label: Label, type: string }
+          - { name: intro, label: Intro (the pain, in the visitor's words), type: text }
+          - { name: items, label: Steps, type: string, list: true }
+          - { name: close, label: Closing line, type: string }
+      - name: parts
+        label: The five parts
+        type: object
+        fields:
+          - { name: title, label: Heading, type: string }
+          - name: items
+            label: Parts
+            type: object
+            list: true
+            fields:
+              - { name: no, label: Number, type: string }
+              - { name: title, label: Title, type: string }
+              - { name: body, label: Text, type: text }
+      - { name: facts, label: Timeline facts, type: string, list: true }
+      - { name: faqTitle, label: FAQ heading, type: string }
+      - { name: faqExtra, label: Extra questions (added after the homepage FAQ), component: faqItem, list: true }
+  - name: about
+    label: About
+    type: file
+    path: src/content/pages/about.md
+    fields:
+      - { name: seoTitle, label: SEO title, type: string }
+      - { name: description, label: SEO description, type: text }
+      - { name: h1, label: Heading (H1), type: string }
+      - { name: paragraphs, label: Paragraphs, type: text, list: true }
+      - { name: background, label: Personal background, type: text }
+      - { name: headshot, label: Headshot (4:5), type: image, options: { media: media } }
+      - { name: headshotAlt, label: Headshot description (alt text), type: string }
+      - { name: headshotPlaceholder, label: Headshot placeholder, type: string }
+  - name: pricing
+    label: Pricing
+    type: file
+    path: src/content/pages/pricing.md
+    fields:
+      - { name: seoTitle, label: SEO title, type: string }
+      - { name: description, label: SEO description, type: text }
+      - { name: h1, label: Heading (H1), type: string }
+      - { name: lead, label: Visible text, type: text }
+      - { name: table, label: Price table (placeholder until confirmed), type: text }
+  - name: roi-calculator
+    label: ROI calculator
+    type: file
+    path: src/content/pages/roi-calculator.md
+    fields:
+      - { name: seoTitle, label: SEO title, type: string }
+      - { name: description, label: SEO description, type: text }
+      - { name: h1, label: Heading (H1), type: string }
+      - { name: lead, label: Lead, type: text }
+      - { name: iframeTitle, label: Calculator frame title (for screen readers), type: string }
+      - { name: fallbackText, label: Fallback link text, type: string }
+      - { name: disclaimer, label: Disclaimer, type: text }
+  - name: book
+    label: Book
+    type: file
+    path: src/content/pages/book.md
+    fields:
+      - { name: seoTitle, label: SEO title, type: string }
+      - { name: description, label: SEO description, type: text }
+      - { name: h1, label: Heading (H1), type: string }
+      - { name: lead, label: Lead, type: text }
+      - { name: fallbackText, label: Fallback link text, type: string }
+  - name: contact
+    label: Contact
+    type: file
+    path: src/content/pages/contact.md
+    fields:
+      - { name: seoTitle, label: SEO title, type: string }
+      - { name: description, label: SEO description, type: text }
+      - { name: h1, label: Heading (H1), type: string }
+      - { name: lead, label: Lead, type: text }
+      - name: form
+        label: Form
+        type: object
+        fields:
+          - { name: nameLabel, label: Name label, type: string }
+          - { name: emailLabel, label: Email label, type: string }
+          - { name: firmLabel, label: Firm label, type: string }
+          - { name: messageLabel, label: Message label, type: string }
+          - { name: submitLabel, label: Button label, type: string }
+          - { name: subject, label: Email subject, type: string }
+          - { name: keyPlaceholder, label: Note shown in preview when the form key is missing, type: string }
+  - name: work-page
+    label: Work page
+    type: file
+    path: src/content/pages/work.md
+    fields:
+      - { name: seoTitle, label: SEO title, type: string }
+      - { name: description, label: SEO description, type: text }
+      - { name: label, label: Label, type: string }
+      - { name: h1, label: Heading (H1), type: string }
+      - { name: emptyLine, label: Line shown while no work is cleared, type: string }
+      - { name: whatItDidTitle, label: "\"What this clip did\" heading", type: string }
+      - { name: transcriptTitle, label: Transcript label, type: string }
+  - name: insights-page
+    label: Insights index
+    type: file
+    path: src/content/pages/insights.md
+    fields:
+      - { name: seoTitle, label: SEO title, type: string }
+      - { name: description, label: SEO description, type: text }
+      - { name: h1, label: Heading (H1), type: string }
+      - { name: draftLabel, label: Draft label (preview only), type: string }
+  - name: thanks
+    label: Thanks
+    type: file
+    path: src/content/pages/thanks.md
+    fields:
+      - { name: seoTitle, label: SEO title, type: string }
+      - { name: description, label: SEO description, type: text }
+      - { name: h1, label: Heading (H1), type: string }
+      - { name: replyTime, label: Reply-time promise, type: text }
+  - name: not-found
+    label: 404 page
+    type: file
+    path: src/content/pages/404.md
+    fields:
+      - { name: seoTitle, label: SEO title, type: string }
+      - { name: description, label: SEO description, type: text }
+      - { name: h1, label: Heading (H1), type: string }
+      - name: links
+        label: Links
+        type: object
+        list: true
+        fields:
+          - { name: label, label: Label, type: string }
+          - { name: href, label: Link, type: string }
+  - name: privacy-policy
+    label: Privacy policy
+    type: file
+    path: src/content/pages/privacy-policy.md
+    fields:
+      - { name: seoTitle, label: SEO title, type: string }
+      - { name: description, label: SEO description, type: text }
+      - { name: h1, label: Heading (H1), type: string }
+      - { name: portedText, label: Ported policy (placeholder), type: text }
+      - { name: reviewNote, label: Review note (placeholder), type: text }
+      - { name: body, label: Policy text, type: rich-text }
+
+  # ----------------------------------------------------------- Site settings
+  - name: settings
+    label: Site settings
+    type: file
+    path: src/content/settings.json
+    format: json
+    fields:
+      - { name: siteName, label: Site name, type: string }
+      - { name: strapline, label: Strapline, type: string }
+      - { name: description, label: Organisation description (schema), type: text }
+      - { name: email, label: Contact email, type: string }
+      - { name: founder, label: Founder, type: string }
+      - { name: founderJobTitle, label: Founder job title, type: string }
+      - { name: locality, label: Based in, type: string }
+      - { name: areaServed, label: Areas served (schema), type: string, list: true }
+      - { name: logoUrl, label: Logo URL (leave empty until there is a logo), type: string }
+      - name: cta
+        label: Primary call to action
+        type: object
+        fields:
+          - { name: label, label: Button label, type: string }
+          - { name: href, label: Link, type: string }
+          - { name: microcopy, label: Microcopy, type: string }
+      - name: nav
+        label: Header navigation
+        type: object
+        list: true
+        fields:
+          - { name: label, label: Label, type: string }
+          - { name: href, label: Link, type: string }
+          - name: children
+            label: Dropdown links
+            type: object
+            list: true
+            fields:
+              - { name: label, label: Label, type: string }
+              - { name: href, label: Link, type: string }
+      - name: ctaBand
+        label: Closing call-to-action band
+        type: object
+        fields:
+          - { name: title, label: Heading, type: string }
+          - { name: body, label: Text, type: text }
+          - { name: roiLinkText, label: ROI calculator text link, type: string }
+          - { name: roiLinkHref, label: ROI calculator link target, type: string }
+          - { name: signOff, label: Sign-off (homepage only), type: string }
+      - name: footer
+        label: Footer
+        type: object
+        fields:
+          - { name: tagline, label: Tagline, type: string }
+          - { name: area, label: Area line, type: string }
+          - name: links
+            label: Links
+            type: object
+            list: true
+            fields:
+              - { name: label, label: Label, type: string }
+              - { name: href, label: Link, type: string }
+          - name: insightsLink
+            label: Insights link (shown once a post is published)
+            type: object
+            fields:
+              - { name: label, label: Label, type: string }
+              - { name: href, label: Link, type: string }
+          - { name: copyright, label: Copyright name, type: string }
+      - name: socials
+        label: Social links
+        type: object
+        list: true
+        fields:
+          - { name: label, label: Label, type: string }
+          - { name: href, label: Link, type: string }
+      - name: ui
+        label: Interface labels
+        type: object
+        fields:
+          - { name: home, label: "\"Home\" in breadcrumbs", type: string }
+          - { name: breadcrumbLabel, label: Breadcrumb landmark name, type: string }
+          - { name: menu, label: Mobile menu button, type: string }
+          - { name: skipLink, label: Skip link, type: string }
+          - { name: playVideo, label: Play button label, type: string }
+          - { name: watchOnYouTube, label: No-JavaScript video link, type: string }

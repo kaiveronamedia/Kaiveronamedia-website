@@ -1,0 +1,21 @@
+---
+// Renders a `[[PLACEHOLDER: ...]]` token as a dashed amber box in preview builds.
+// Production builds render nothing (the parent section is omitted as well).
+import { SHOW_PLACEHOLDERS } from '../lib/env';
+
+interface Props {
+  description: string;
+  /** CSS aspect-ratio, e.g. "9/16", so the layout doesn't shift when real content arrives */
+  aspect?: string;
+  inline?: boolean;
+}
+const { description, aspect, inline = false } = Astro.props;
+const text = description.replace(/^\s*\[\[PLACEHOLDER:\s*/, '').replace(/\]\]\s*$/, '');
+const Tag = inline ? 'span' : 'div';
+---
+{SHOW_PLACEHOLDERS && (
+  <Tag class:list={['ph', { 'ph-inline': inline }]} style={aspect ? `aspect-ratio: ${aspect}` : undefined} data-placeholder>
+    <span class="ph-label">PLACEHOLDER</span>
+    <span class="ph-desc">{text}</span>
+  </Tag>
+)}

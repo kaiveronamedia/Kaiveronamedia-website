@@ -1,0 +1,14 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'pill' | 'link';
+  class?: string;
+  external?: boolean;
+}
+const { href, variant = 'primary', class: cls, external = false } = Astro.props;
+---
+<a
+  href={href}
+  class:list={['btn', `btn-${variant}`, cls]}
+  {...(external ? { target: '_blank', rel: 'noopener' } : {})}
+><span class="btn-label"><slot /></span>{variant !== 'pill' && <span class="btn-arrow" aria-hidden="true">→</span>}</a>

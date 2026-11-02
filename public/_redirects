@@ -1,0 +1,6 @@
+# Old Squarespace URLs (info file §6.1). Domain-level redirects (www, kaiverona.co.uk)
+# are set at the Cloudflare level, not here: see the PR checklist.
+/appointments    /book                 301
+/new-page-2      /about                301
+/add-ons         /pricing              301
+/sitemap.xml     /sitemap-index.xml    301

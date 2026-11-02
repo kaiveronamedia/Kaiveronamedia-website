@@ -1,0 +1,27 @@
+---
+import settings from '../content/settings.json';
+import { hasPublishedInsights } from '../lib/content';
+
+// The Insights link only appears once at least one post is published.
+const links = (await hasPublishedInsights()) ? [...settings.footer.links, settings.footer.insightsLink] : settings.footer.links;
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <p class="footer-tagline">{settings.footer.tagline}</p>
+    <p class="footer-area">{settings.footer.area}</p>
+    <p class="footer-email"><a href={`mailto:${settings.email}`}>{settings.email}</a></p>
+    <div class="footer-links">
+      <ul role="list">
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+      <ul role="list" class="footer-socials">
+        {settings.socials.map((s) => <li><a href={s.href} rel="noopener me" target="_blank">{s.label}</a></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="footer-mark" aria-hidden="true"><span>{settings.siteName}</span></div>
+    <p class="footer-legal">© {year} {settings.footer.copyright}</p>
+  </div>
+</footer>
