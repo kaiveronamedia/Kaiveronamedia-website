@@ -6,7 +6,14 @@
   "founder": "Kai Verona",
   "founderJobTitle": "Founder",
   "locality": "Nottingham",
-  "areaServed": ["Nottingham", "Sheffield", "Derby", "Leeds", "Mansfield"],
+  "areaServed": [
+    "Nottingham",
+    "Sheffield",
+    "Derby",
+    "Chesterfield",
+    "Leeds",
+    "Mansfield"
+  ],
   "logoUrl": "",
   "cta": {
     "label": "Map my funnel for free",
@@ -14,19 +21,60 @@
     "microcopy": "30 minutes. No pitch. You keep the plan either way."
   },
   "nav": [
-    { "label": "How it works", "href": "/how-it-works" },
+    {
+      "label": "How it works",
+      "href": "/how-it-works"
+    },
     {
       "label": "Who it's for",
       "href": "/#who-its-for",
       "children": [
-        { "label": "Architects", "href": "/video-for-architects" },
-        { "label": "Construction", "href": "/video-for-construction" },
-        { "label": "Mortgage & finance", "href": "/video-for-mortgage-brokers" }
+        {
+          "label": "Architects",
+          "href": "/video-for-architects"
+        },
+        {
+          "label": "Construction",
+          "href": "/video-for-construction"
+        },
+        {
+          "label": "Mortgage & finance",
+          "href": "/video-for-mortgage-brokers"
+        },
+        {
+          "label": "AI consultants & founders",
+          "href": "/video-for-ai-consultants"
+        },
+        {
+          "label": "Car dealers & motorsport",
+          "href": "/video-for-car-dealers"
+        },
+        {
+          "label": "Premium homes",
+          "href": "/video-for-premium-homes"
+        },
+        {
+          "label": "Gyms & coaches",
+          "href": "/video-for-gyms"
+        },
+        {
+          "label": "Hospitality & venues",
+          "href": "/video-for-hospitality"
+        }
       ]
     },
-    { "label": "Work", "href": "/work" },
-    { "label": "ROI calculator", "href": "/roi-calculator" },
-    { "label": "About", "href": "/about" }
+    {
+      "label": "Work",
+      "href": "/work"
+    },
+    {
+      "label": "ROI calculator",
+      "href": "/roi-calculator"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    }
   ],
   "ctaBand": {
     "title": "Want to see what your funnel would look like?",
@@ -37,19 +85,40 @@
   },
   "footer": {
     "tagline": "Verona Media · Video funnels that convert.",
-    "area": "Based in Nottingham. Filming across Nottingham, Sheffield, Derby, Leeds and Mansfield.",
+    "area": "Based in Nottingham. Filming across Nottingham, Sheffield, Derby, Chesterfield, Leeds and Mansfield.",
     "links": [
-      { "label": "Pricing", "href": "/pricing" },
-      { "label": "Contact", "href": "/contact" },
-      { "label": "Privacy policy", "href": "/privacy-policy" }
+      {
+        "label": "Pricing",
+        "href": "/pricing"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact"
+      },
+      {
+        "label": "Privacy policy",
+        "href": "/privacy-policy"
+      }
     ],
-    "insightsLink": { "label": "Insights", "href": "/insights" },
+    "insightsLink": {
+      "label": "Insights",
+      "href": "/insights"
+    },
     "copyright": "Verona Media"
   },
   "socials": [
-    { "label": "LinkedIn", "href": "https://www.linkedin.com/in/kai-verona-103141249/" },
-    { "label": "Instagram", "href": "https://www.instagram.com/kaiveronamedia/" },
-    { "label": "X", "href": "https://x.com/KaiVeronaMedia" }
+    {
+      "label": "LinkedIn",
+      "href": "https://www.linkedin.com/in/kai-verona-103141249/"
+    },
+    {
+      "label": "Instagram",
+      "href": "https://www.instagram.com/kaiveronamedia/"
+    },
+    {
+      "label": "X",
+      "href": "https://x.com/KaiVeronaMedia"
+    }
   ],
   "ui": {
     "home": "Home",
