@@ -77,7 +77,7 @@
     }
   ],
   "ctaBand": {
-    "title": "Want to see what your funnel would look like?",
+    "title": "You don't need more hours. You need a funnel that works while you're busy.",
     "body": "You shouldn't have to guess what would work for your firm. In 30 minutes, I'll map it with you: we'll pick your highest-value service and map out exactly what we'd build. You keep the plan whether or not you work with us.",
     "roiLinkText": "Not ready to talk? See what your funnel could bring in",
     "roiLinkHref": "/roi-calculator",
@@ -126,6 +126,8 @@
     "menu": "Menu",
     "skipLink": "Skip to content",
     "playVideo": "Play video",
-    "watchOnYouTube": "Watch on YouTube"
+    "watchOnYouTube": "Watch on YouTube",
+    "pauseVideo": "Pause background video",
+    "playVideoBg": "Play background video"
   }
 }

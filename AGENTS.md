@@ -79,7 +79,7 @@ brands, businesses, clients
 3. **Testimonials sit directly under the hero.** Use only the three real ones listed in `BUILD_BRIEF.md` §6.2, verbatim, with their exact attributions.
 4. **One primary (teal) button per screen.** Secondary actions are text links or outline pills.
 5. **The homepage has 8 sections at most.**
-6. **No carousels, sliders or autoplaying video.** Video plays only when clicked (`YouTubeFacade`).
+6. **No carousels or sliders. No autoplaying video, with one exception (Kai, 2 Nov 2026):** a muted, looping background video behind the homepage hero. It starts from JavaScript after the page loads, never under `prefers-reduced-motion` or Save-Data, sits under an ink scrim, and has a visible pause button. Ambient stock or generated footage may fill it short term, but never presented as a customer's work. Every other video plays only when clicked (`YouTubeFacade`).
 7. **Never advertise the founding-client offer** or any discount publicly.
 8. **Lead guarantees:** only the *delivery* guarantee may be stated, never a guarantee of a number of leads.
 9. **Never name a client** or show their footage unless it is listed as cleared in `src/content/work/`.
@@ -99,14 +99,15 @@ brands, businesses, clients
 | `stone` / `stone-2` | `#F3F0EA` / `#E8E3D9` | Light ground / raised light surface |
 | `graphite` / `slate` | `#16191F` / `#585E68` | Text / secondary text on stone (15.5:1 / 5.7:1) |
 | `mist` / `fog` | `#ECE9E3` / `#A7ADB8` | Text / secondary text on ink (15.3:1 / 8.2:1) |
-| `teal` | `#3D9494` | Brand. Primary button on ink (ink label, 5.2:1); strokes. Never text on stone (3.15:1). |
+| `teal` | `#3D9494` | Brand. Strokes and rules. Never text on stone (3.15:1). |
 | `teal-deep` | `#1F5C59` | Primary button on stone (stone label, 6.75:1); links and emphasis on stone |
-| `teal-light` | `#7CC4BE` | Links, emphasis, focus rings on ink (9.3:1) |
+| `teal-light` | `#7CC4BE` | Primary button on ink (ink label, 9.3:1); links, emphasis, focus rings on ink |
 
 - Fonts (self-hosted via Fontsource): Instrument Serif 400/italic for headings and quotes; Instrument Sans (variable) for body, UI and buttons; Geist Mono 500 for uppercase labels only. Preload Instrument Serif 400 latin.
 - Headings are sentence case, serif, weight 400. Uppercase only in mono labels (+0.08em tracking).
 - Section labels use a middle dot, never an em dash: `02 · The problem`.
-- Buttons: 52px, 2px radius, sentence case, no glow. One solid teal button per screen; the header CTA is an outline button.
+- Buttons (higher contrast, Kai, 2 Nov 2026): 56px, 2px radius, bold, sentence case, no glow. On ink: teal-light with an ink label. On stone: ink with a mist label. One solid primary per screen; the header CTA is an outline button.
+- Icons (Kai, 2 Nov 2026): the line set in `src/components/Icon.astro` only (1.5px strokes, currentColor), decorative, beside text that carries the meaning. They draw in on scroll (CSS only).
 - Hairlines, not boxes; no shadows, glows or gradients. Container 1320px, 12-column grid, one breakpoint at 900px, fluid type with clamp().
 - Motion is CSS-only and respects prefers-reduced-motion. No autoplay, carousels, marquees, parallax or preloaders.
 - FAQ: native <details>/<summary>, no JavaScript.

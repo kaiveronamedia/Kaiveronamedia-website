@@ -81,7 +81,7 @@
     --rule: rgb(236 233 227 / .14);
     --field: #6b7280;
     --error: var(--error-on-ink);
-    --btn-bg: var(--color-teal); --btn-fg: var(--color-ink); --btn-bg-hover: #4fa8a6;
+    --btn-bg: var(--color-teal-light); --btn-fg: var(--color-ink); --btn-bg-hover: var(--color-mist);
     background-color: var(--bg); color: var(--fg); color-scheme: dark;
   }
   .surface-stone {
@@ -92,7 +92,7 @@
     --rule: rgb(22 25 31 / .14);
     --field: #7d7e80;
     --error: var(--error-on-stone);
-    --btn-bg: var(--color-teal-deep); --btn-fg: var(--color-stone); --btn-bg-hover: #184b49;
+    --btn-bg: var(--color-ink); --btn-fg: var(--color-mist); --btn-bg-hover: var(--color-teal-deep);
     background-color: var(--bg); color: var(--fg); color-scheme: light;
   }
 }
@@ -136,7 +136,10 @@ main > :first-child { margin-top: calc(-1 * var(--header-h)); }
 .site-header::before { content: ""; position: absolute; inset: 0; z-index: -1; background-color: var(--color-ink); border-bottom: 1px solid transparent; }
 @supports (animation-timeline: scroll()) {
   @media (prefers-reduced-motion: no-preference) {
-    .site-header::before { background-color: transparent; animation: header-settle linear both; animation-timeline: scroll(root block); animation-range: 0 96px; }
+    .site-header::before { background-color: transparent; animation: header-settle linear both; animation-range: 0 96px; }
+    /* Separate, more specific rule: the CSS minifier would otherwise fold the
+       timeline into the animation shorthand, which browsers reject. */
+    html .site-header::before { animation-timeline: scroll(root block); }
   }
 }
 @keyframes header-settle {
@@ -175,10 +178,11 @@ html:has(.menu-sheet[open]) { overflow: hidden; }
 
 /* ------------------------------------------------------------ Buttons */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5em; text-decoration: none; font: 600 1rem/1 var(--font-sans); white-space: nowrap; cursor: pointer; }
-.btn-primary, .btn-pill { height: 52px; padding-inline: 28px; border-radius: 2px; }
+.btn-primary, .btn-pill { height: 56px; padding-inline: 30px; border-radius: 2px; }
+.btn-primary { font-weight: 700; font-size: 1.0625rem; }
 .btn-primary { background-color: var(--btn-bg); color: var(--btn-fg); border: 0; }
 .btn-primary:hover { background-color: var(--btn-bg-hover); }
-.btn-pill { border: 1px solid color-mix(in srgb, var(--fg) 40%, transparent); color: var(--fg); background: transparent; }
+.btn-pill { border: 1px solid color-mix(in srgb, var(--fg) 75%, transparent); color: var(--fg); background: transparent; }
 .btn-pill:hover { border-color: var(--fg); background-color: color-mix(in srgb, var(--fg) 6%, transparent); }
 .btn-arrow { display: inline-block; }
 .btn-link { display: inline; white-space: normal; color: var(--accent); font-weight: 500; line-height: 1.5; }
@@ -554,12 +558,15 @@ html:has(.menu-sheet[open]) { overflow: hidden; }
   }
   /* Section reveal: CSS scroll-driven, never on the hero. */
   @supports (animation-timeline: view()) {
-    .reveal { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 35%; }
+    .reveal { animation: rise linear both; animation-range: entry 0% entry 35%; }
+    html .reveal { animation-timeline: view(); }
     .reveal-2 { animation-range: entry 5% entry 40%; }
     .reveal-3 { animation-range: entry 10% entry 45%; }
   }
 }
-@keyframes rise { from { opacity: 0; translate: 0 16px; } }
+/* A wipe and a rise, not a fade: text is never part-transparent, so its
+   contrast holds at every point of the reveal. */
+@keyframes rise { from { clip-path: inset(0 0 100% 0); translate: 0 24px; } to { clip-path: inset(0 0 -10% 0); } }
 
 @view-transition { navigation: auto; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 200ms; }
@@ -578,3 +585,38 @@ html:has(.menu-sheet[open]) { overflow: hidden; }
 @media (min-width: 900px) { .about-grid.no-plate .about-copy { grid-column: 1 / span 8; } }
 .transcript .prose { margin-top: var(--space-4); }
 .watch .t-h2 + .section-lead { margin-top: var(--space-4); }
+
+
+/* ------------------------------------------- Hero background video */
+.hero.has-bg-video { position: relative; isolation: isolate; overflow: clip; }
+.hero-bg { position: absolute; inset: 0; z-index: -1; background: var(--color-ink); }
+.hero-bg-video { inline-size: 100%; block-size: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s var(--ease-out-soft); }
+.hero-bg-video.is-playing { opacity: .9; }
+/* Ink scrim so every line of hero text keeps its contrast over the footage. */
+.hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(11 19 34 / .88) 0%, rgb(11 19 34 / .7) 55%, rgb(11 19 34 / .55) 100%); }
+.hero-bg-toggle { position: absolute; right: var(--gutter); top: calc(var(--header-h) + 16px); z-index: 2; padding: 8px 12px; color: var(--color-mist); background: rgb(11 19 34 / .7); border: 1px solid rgb(236 233 227 / .4); border-radius: 2px; cursor: pointer; }
+.hero-bg-toggle:hover { border-color: var(--color-mist); }
+
+/* ---------------------------------------------------------- Icons */
+.icon { inline-size: 100%; block-size: 100%; display: block; }
+.pains { display: grid; gap: 16px; margin: var(--space-7) 0 0; padding: 0; }
+@media (min-width: 640px) { .pains { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .pains { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; } }
+.pain { position: relative; padding: clamp(24px, 2.5vw, 32px); background: var(--raised); border: 1px solid var(--rule); border-top: 2px solid var(--accent); border-radius: 2px; }
+.pain-icon { display: block; inline-size: 48px; block-size: 48px; color: var(--accent); margin-bottom: var(--space-5); }
+.pain-title { margin-bottom: var(--space-2); }
+.pain-body { color: var(--fg-muted); }
+.tile-icon { display: block; inline-size: 32px; block-size: 32px; color: var(--accent); }
+.tile { grid-template-columns: 40px minmax(0, 1fr) auto; }
+.stop-icon { display: block; inline-size: 40px; block-size: 40px; color: var(--accent); margin-bottom: var(--space-3); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .pain { transition: translate var(--t-line) var(--ease-drawn), border-color var(--t-fast) var(--ease-colour); }
+  .pain:hover { translate: 0 -4px; }
+  @supports (animation-timeline: view()) {
+    /* Icons draw themselves in as they scroll into view. */
+    .icon path { stroke-dasharray: 1; animation: draw linear both; animation-range: entry 10% cover 35%; }
+    html .icon path { animation-timeline: view(); }
+  }
+}
+@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }

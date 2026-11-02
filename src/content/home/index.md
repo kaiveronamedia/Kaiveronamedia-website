@@ -1,11 +1,11 @@
 ---
 seoTitle: "Video Funnels for Architects & Contractors | Verona Media"
-description: "Your videos get views but no enquiries? Clips, an anchor video and a lead form turn them into booked enquiries for architects, contractors and brokers."
+description: "Too busy to keep up with marketing? You get one filming day and a video funnel that brings in booked enquiries while you get on with the work."
 hero:
   eyebrow: "Video funnels that convert."
-  title: "Your videos get views. Do they get enquiries?"
-  heroEmphasis: "Do they get enquiries?"
-  sub: "You get the system that turns your best service into booked enquiries. Not just content, a funnel that actually converts."
+  title: "You're too busy to market your firm. Your pipeline knows it."
+  heroEmphasis: "Your pipeline knows it."
+  sub: "You get one filming day and a video funnel that keeps bringing in enquiries while you get on with the work."
   who: "For architects, contractors and brokers across the Midlands and the North."
   chips:
     - "1 filming day"
@@ -15,6 +15,11 @@ hero:
     poster: ""
     title: ""
     placeholder: "[[PLACEHOLDER: one cleared 9:16 clip, YouTube ID + poster]]"
+  backgroundVideo:
+    mp4: "/media/hero/hero-loop.mp4"
+    webm: "/media/hero/hero-loop.webm"
+    poster: "/media/hero/hero-poster.jpg"
+    standIn: true
 testimonials:
   - quote: "I know you care, and will work hard for my business."
     attribution: "Founder, Derby"
@@ -24,23 +29,27 @@ testimonials:
     attribution: "Business Owner"
 problem:
   eyebrow: "The problem"
-  title: "You're posting content. So why is nothing landing in your inbox?"
-  haveLabel: "What you have"
-  have:
-    - "views"
-    - "likes"
-    - "a folder of videos"
-  needLabel: "What you need"
-  need:
-    - "enquiries"
-    - "booked calls"
-    - "pipeline"
-  body: "Your video got views. People watched it, some of them liked it, and then they left and you never found out who they were. That's not a content problem. It's a funnel problem, and it's what almost every firm gets wrong."
+  title: "You know you should be doing video. You just never get round to it."
+  points:
+    - icon: "clock"
+      title: "No time to post"
+      body: "You're busy doing the work, so marketing slides to the bottom of the list, week after week."
+    - icon: "wave"
+      title: "Feast, then famine"
+      body: "You're flat out one month and quiet the next, because nothing brings enquiries in while you're busy."
+    - icon: "eye"
+      title: "Views, not enquiries"
+      body: "Your videos get likes, then people leave and you never find out who they were."
+    - icon: "eye-off"
+      title: "Invisible to buyers"
+      body: "You're good at what you do, but buyers choosing online can't see it, so they pick someone they can."
+  body: "You don't have a content problem. You have a funnel problem, and it's what almost every firm gets wrong."
 process:
   eyebrow: "How it works"
   title: "Your route to an enquiry, in three parts."
   stops:
     - no: "01"
+      icon: "phone"
       stage: "Attention"
       title: "Short-form clips"
       body: "Your buyers scroll past anything generic. Focused clips stop them with problems and ideas they already care about."
@@ -49,6 +58,7 @@ process:
         - "8–12 vertical, captioned clips"
         - "Platform-ready edits for LinkedIn, Instagram, YouTube Shorts and TikTok"
     - no: "02"
+      icon: "play"
       stage: "Trust"
       title: "Long-form anchor video"
       body: "Your buyers need more than a clip before they trust you with a big decision. One long-form video explains your offer, proves your expertise and handles their objections properly."
@@ -57,6 +67,7 @@ process:
         - "Structure, talking points and direction"
         - "Full edit with a conversion-focused CTA"
     - no: "03"
+      icon: "form"
       stage: "Conversion"
       title: "Lead form"
       body: "Your interested viewers drift away when there's nowhere to go next. A focused landing page and form capture, qualify and route every enquiry."
@@ -77,21 +88,27 @@ included:
   addonLabel: "Add-on"
   items:
     - title: "Short-form clips"
+      icon: "phone"
       body: "Your posts get scrolled past. Hook-led clips win back that attention."
       type: included
     - title: "Long-form anchor video"
+      icon: "play"
       body: "Your buyers want proof before they call. One anchor video builds that trust."
       type: included
     - title: "Lead form + landing page"
+      icon: "form"
       body: "Your viewers leave without a trace. A lead form and landing page turn them into enquiries."
       type: included
     - title: "One filming day"
+      icon: "camera"
       body: "Your diary is already full, so the filming day is planned around you."
       type: included
     - title: "Lead follow-up"
+      icon: "mail"
       body: "Your warm leads go quiet without follow-up. An email sequence keeps the conversation moving toward a booked call."
       type: addon
     - title: "Paid ads"
+      icon: "megaphone"
       body: "Your organic reach has a ceiling. Once the system converts, paid ads put it in front of more buyers."
       type: addon
 who:

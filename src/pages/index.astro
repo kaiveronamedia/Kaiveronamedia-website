@@ -3,6 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import CtaBand from '../components/CtaBand.astro';
 import FAQ from '../components/FAQ.astro';
+import HeroVideo from '../components/HeroVideo.astro';
+import Icon from '../components/Icon.astro';
 import HeroPlate from '../components/HeroPlate.astro';
 import HeroTitle from '../components/HeroTitle.astro';
 import ProcessFlow from '../components/ProcessFlow.astro';
@@ -34,7 +36,8 @@ const faqItems = visibleItems(home.faq);
 ---
 <BaseLayout title={home.seoTitle} description={home.description} cta={false} schema={faqPage(home.faq)} preloadItalic={Boolean(hero.heroEmphasis)}>
   {/* 1. Hero (Ink), with the testimonials inside the hero band */}
-  <section class="hero surface-ink" aria-labelledby="hero-title" data-section={n('hero')}>
+  <section class:list={['hero surface-ink', { 'has-bg-video': hero.backgroundVideo }]} aria-labelledby="hero-title" data-section={n('hero')}>
+    {hero.backgroundVideo && <HeroVideo {...hero.backgroundVideo} />}
     <div class="container">
       <div class="hero-grid">
         <div class="hero-copy">
@@ -60,16 +63,15 @@ const faqItems = visibleItems(home.faq);
   <section class="section surface-stone" aria-labelledby="problem-title" data-section={n('problem')}>
     <div class="container">
       <SectionHeader eyebrow={problem.eyebrow} headingId="problem-title" index={n('problem')} total={total} title={problem.title} wide />
-      <div class="compare reveal">
-        <div class="compare-col">
-          <p class="compare-label t-label">{problem.haveLabel}</p>
-          <ul role="list" class="compare-list is-have">{problem.have.map((i) => <li>{i}</li>)}</ul>
-        </div>
-        <div class="compare-col">
-          <p class="compare-label t-label">{problem.needLabel}</p>
-          <ul role="list" class="compare-list is-need">{problem.need.map((i) => <li>{i}</li>)}</ul>
-        </div>
-      </div>
+      <ul class="pains" role="list">
+        {problem.points.map((p, i) => (
+          <li class:list={['pain reveal', i % 3 === 1 && 'reveal-2', i % 3 === 2 && 'reveal-3']}>
+            <span class="pain-icon"><Icon name={p.icon} /></span>
+            <h3 class="pain-title t-h3">{p.title}</h3>
+            <p class="pain-body">{p.body}</p>
+          </li>
+        ))}
+      </ul>
       <p class="problem-body t-lead reveal">{problem.body}</p>
     </div>
   </section>
@@ -90,7 +92,7 @@ const faqItems = visibleItems(home.faq);
       <ul class="tiles reveal" role="list">
         {included.items.map((item, i) => (
           <li class:list={['tile', { 'is-addon': item.type === 'addon' }]}>
-            <span class="tile-no t-label" aria-hidden="true">A{i + 1}</span>
+            <span class="tile-icon" aria-hidden="true">{item.icon ? <Icon name={item.icon} /> : <span class="t-label">A{i + 1}</span>}</span>
             <div class="tile-text">
               <h3 class="tile-title t-h3">{item.title}</h3>
               <p class="tile-body">{item.body}</p>
