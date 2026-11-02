@@ -27,8 +27,10 @@ When this file and any other text disagree, this file wins. When you are unsure,
 
 ## 2. Who the site is for
 
-- **Sectors, in this order:** architects, then construction, then mortgage & finance.
-  - Nothing else gets a card, a page or a mention.
+- **Sectors, in this order:** architects, then construction, then mortgage & finance; then (added from Kai's Notion ICP, 30 Oct 2026) AI consultants & founders, car dealers & motorsport, premium homes (high-end kitchens, interiors, builders, landscaping), gyms, HYROX/CrossFit boxes & coaches, and hospitality & venues (cocktail bars, restaurants, event spaces).
+  - Nothing else gets a card, a page or a mention. Never: accountancy, legal, recruitment or hiring firms, HR.
+  - The ICP filter for every sector: premium, high-value customers, an owner happy on camera, and a clear path from video to enquiries. Low-ticket firms are out, even in a target sector.
+  - Area: Nottingham, Sheffield, Derby, Chesterfield, Leeds, Mansfield (core).
   - **Accountancy is excluded everywhere.** No pages, examples, logos, clients or form options. This includes the subtitle in the ROI calculator's sector picker.
 - **Ideal customer:** owner-led firms of 5–15 staff, where one new client is worth £5k or more.
   - The £5k figure may appear on sector pages only, as a qualifier. It must never appear on the homepage.
